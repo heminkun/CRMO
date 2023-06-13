@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.SysRigthMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.SysRigth">
+		<!---->
+		<id column="right_id" property="rightId"  />
+		<!---->
+		<result column="right_parent_id" property="rightParentId"  />
+		<!---->
+		<result column="right_type" property="rightType"  />
+		<!---->
+		<result column="right_text" property="rightText"  />
+		<!---->
+		<result column="right_url" property="rightUrl"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 right_id,right_parent_id,right_type,right_text,right_url
+		 
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.rightId != null">
+				 and  right_id = #{query.rightId}
+			</if>
+			<if test="query.rightParentId != null and query.rightParentId!=''">
+				 and  right_parent_id = #{query.rightParentId}
+			</if>
+			<if test="query.rightType != null">
+				 and  right_type = #{query.rightType}
+			</if>
+			<if test="query.rightText != null and query.rightText!=''">
+				 and  right_text = #{query.rightText}
+			</if>
+			<if test="query.rightUrl != null and query.rightUrl!=''">
+				 and  right_url = #{query.rightUrl}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.rightParentIdFuzzy!= null  and query.rightParentIdFuzzy!=''">
+				 and  right_parent_id like concat('%', #{query.rightParentIdFuzzy}, '%')
+			</if>
+			<if test="query.rightTextFuzzy!= null  and query.rightTextFuzzy!=''">
+				 and  right_text like concat('%', #{query.rightTextFuzzy}, '%')
+			</if>
+			<if test="query.rightUrlFuzzy!= null  and query.rightUrlFuzzy!=''">
+				 and  right_url like concat('%', #{query.rightUrlFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM sys_rigth <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM sys_rigth <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.SysRigth">
+		<selectKey keyProperty="bean.rightId" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO sys_rigth
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.rightParentId != null">
+				 right_parent_id,
+			</if>
+			<if test="bean.rightType != null">
+				 right_type,
+			</if>
+			<if test="bean.rightText != null">
+				 right_text,
+			</if>
+			<if test="bean.rightUrl != null">
+				 right_url,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.rightParentId!=null">
+				 #{bean.rightParentId},
+			</if>
+			<if test="bean.rightType!=null">
+				 #{bean.rightType},
+			</if>
+			<if test="bean.rightText!=null">
+				 #{bean.rightText},
+			</if>
+			<if test="bean.rightUrl!=null">
+				 #{bean.rightUrl},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.SysRigth">
+		 INSERT INTO sys_rigth
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.rightId != null">
+				 right_id,
+			</if>
+			<if test="bean.rightParentId != null">
+				 right_parent_id,
+			</if>
+			<if test="bean.rightType != null">
+				 right_type,
+			</if>
+			<if test="bean.rightText != null">
+				 right_text,
+			</if>
+			<if test="bean.rightUrl != null">
+				 right_url,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.rightId!=null">
+				 #{bean.rightId},
+			</if>
+			<if test="bean.rightParentId!=null">
+				 #{bean.rightParentId},
+			</if>
+			<if test="bean.rightType!=null">
+				 #{bean.rightType},
+			</if>
+			<if test="bean.rightText!=null">
+				 #{bean.rightText},
+			</if>
+			<if test="bean.rightUrl!=null">
+				 #{bean.rightUrl},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.rightParentId!=null">
+				 right_parent_id = VALUES(right_parent_id),
+			</if>
+			<if test="bean.rightType!=null">
+				 right_type = VALUES(right_type),
+			</if>
+			<if test="bean.rightText!=null">
+				 right_text = VALUES(right_text),
+			</if>
+			<if test="bean.rightUrl!=null">
+				 right_url = VALUES(right_url),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.SysRigth" useGeneratedKeys="true" keyProperty="rightId">
+		 INSERT INTO sys_rigth(
+			 right_parent_id,
+			 right_type,
+			 right_text,
+			 right_url
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.rightParentId},
+				 #{item.rightType},
+				 #{item.rightText},
+				 #{item.rightUrl}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.SysRigth">
+		 INSERT INTO sys_rigth(
+			 right_parent_id,
+			 right_type,
+			 right_text,
+			 right_url
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.rightParentId},
+				 #{item.rightType},
+				 #{item.rightText},
+				 #{item.rightUrl}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			right_parent_id = VALUES(right_parent_id),
+			right_type = VALUES(right_type),
+			right_text = VALUES(right_text),
+			right_url = VALUES(right_url)
+	</insert>
+
+	<!-- 根据RightId修改-->
+	<update id="updateByRightId" parameterType="com.hmk.crmdoem.entity.po.SysRigth">
+		 UPDATE sys_rigth
+ 		 <set> 
+			<if test="bean.rightParentId != null">
+				 right_parent_id = #{bean.rightParentId},
+			</if>
+			<if test="bean.rightType != null">
+				 right_type = #{bean.rightType},
+			</if>
+			<if test="bean.rightText != null">
+				 right_text = #{bean.rightText},
+			</if>
+			<if test="bean.rightUrl != null">
+				 right_url = #{bean.rightUrl},
+			</if>
+ 		 </set>
+ 		 where right_id=#{rightId}
+	</update>
+
+	<!-- 根据RightId删除-->
+	<delete id="deleteByRightId">
+		delete from sys_rigth where right_id=#{rightId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByRightId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from sys_rigth where right_id=#{rightId}
+	</select>
+
+</mapper>

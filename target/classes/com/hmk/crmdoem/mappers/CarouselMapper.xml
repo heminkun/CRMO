@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.CarouselMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.Carousel">
+		<!---->
+		<result column="id" property="id"  />
+		<!---->
+		<result column="name" property="name"  />
+		<!---->
+		<result column="hash" property="hash"  />
+		<!---->
+		<result column="path" property="path"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 id,name,hash,path
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.id != null">
+				 and  id = #{query.id}
+			</if>
+			<if test="query.name != null and query.name!=''">
+				 and  name = #{query.name}
+			</if>
+			<if test="query.hash != null and query.hash!=''">
+				 and  hash = #{query.hash}
+			</if>
+			<if test="query.path != null and query.path!=''">
+				 and  path = #{query.path}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.nameFuzzy!= null  and query.nameFuzzy!=''">
+				 and  name like concat('%', #{query.nameFuzzy}, '%')
+			</if>
+			<if test="query.hashFuzzy!= null  and query.hashFuzzy!=''">
+				 and  hash like concat('%', #{query.hashFuzzy}, '%')
+			</if>
+			<if test="query.pathFuzzy!= null  and query.pathFuzzy!=''">
+				 and  path like concat('%', #{query.pathFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM carousel <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM carousel <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.Carousel">
+		 INSERT INTO carousel
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.id != null">
+				 id,
+			</if>
+			<if test="bean.name != null">
+				 name,
+			</if>
+			<if test="bean.hash != null">
+				 hash,
+			</if>
+			<if test="bean.path != null">
+				 path,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.id!=null">
+				 #{bean.id},
+			</if>
+			<if test="bean.name!=null">
+				 #{bean.name},
+			</if>
+			<if test="bean.hash!=null">
+				 #{bean.hash},
+			</if>
+			<if test="bean.path!=null">
+				 #{bean.path},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.Carousel">
+		 INSERT INTO carousel
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.id != null">
+				 id,
+			</if>
+			<if test="bean.name != null">
+				 name,
+			</if>
+			<if test="bean.hash != null">
+				 hash,
+			</if>
+			<if test="bean.path != null">
+				 path,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.id!=null">
+				 #{bean.id},
+			</if>
+			<if test="bean.name!=null">
+				 #{bean.name},
+			</if>
+			<if test="bean.hash!=null">
+				 #{bean.hash},
+			</if>
+			<if test="bean.path!=null">
+				 #{bean.path},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.id!=null">
+				 id = VALUES(id),
+			</if>
+			<if test="bean.name!=null">
+				 name = VALUES(name),
+			</if>
+			<if test="bean.hash!=null">
+				 hash = VALUES(hash),
+			</if>
+			<if test="bean.path!=null">
+				 path = VALUES(path),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.Carousel">
+		 INSERT INTO carousel(
+			 id,
+			 name,
+			 hash,
+			 path
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.id},
+				 #{item.name},
+				 #{item.hash},
+				 #{item.path}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.Carousel">
+		 INSERT INTO carousel(
+			 id,
+			 name,
+			 hash,
+			 path
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.id},
+				 #{item.name},
+				 #{item.hash},
+				 #{item.path}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			id = VALUES(id),
+			name = VALUES(name),
+			hash = VALUES(hash),
+			path = VALUES(path)
+	</insert>
+
+	<!-- 根据Id修改-->
+	<update id="updateById" parameterType="com.hmk.crmdoem.entity.po.Carousel">
+		 UPDATE carousel
+ 		 <set> 
+			<if test="bean.name != null">
+				 name = #{bean.name},
+			</if>
+			<if test="bean.hash != null">
+				 hash = #{bean.hash},
+			</if>
+			<if test="bean.path != null">
+				 path = #{bean.path},
+			</if>
+ 		 </set>
+ 		 where id=#{id}
+	</update>
+
+	<!-- 根据Id删除-->
+	<delete id="deleteById">
+		delete from carousel where id=#{id}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectById" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from carousel where id=#{id}
+	</select>
+	<select id="selectByHash" resultMap="base_result_map">
+		select <include refid="base_column_list"/> from carousel where hash=#{hash}
+	</select>
+	<update id="updateNameByName">
+		update carousel set name=#{newName} where name=#{oldName}
+	</update>
+	<select id="selectByName" resultMap="base_result_map">
+		select <include refid="base_column_list"/> from carousel where name=#{name}
+	</select>
+	<delete id="deleteByName">
+		delete from carousel where name=#{name}
+	</delete>
+	<update id="updatePathByPath">
+		update carousel set path=#{newPath} where path=#{oldPath}
+	</update>
+</mapper>

@@ -1,0 +1,52 @@
+spring:
+  redis:
+    host: 43.138.152.69
+    port: 6379
+    jedis:
+      pool:
+        max-active: 1024
+        max-wait: -1s
+        max-idle: 200
+    database: 3
+    password: jhkdjhkjdhsIUTYURTU_iwfZAD
+  mail:
+    host: smtp.qq.com
+    username: heminkun1213@qq.com
+    password: xavrdyqvjuqbeagd
+    port: 25
+    properties:
+      from: heminkun1213@qq.com
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+  servlet:
+    multipart:
+      max-file-size: 10MB
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://43.138.152.69:3306/crm?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+  thymeleaf:
+    cache: false
+mybatis:
+  type-aliases-package: com.hmk.crmdoem.mappers
+  mapper-locations: classpath:com/hmk/crmdoem/mappers/*.xml
+qi_niu:
+  access_key: "V4bBX6_1b-pWK8Kl6EmpgH-oiivEWhJ9-6OyRqPo"
+  secret_key: "FOYJlDkfWydvgoOwnSZo7J2d_jZT2oijQpA51lh-"
+  bucket: image-heminkun
+  cdn: http://img.gvb-go.asia/
+  zone: z2
+  prefix: "crm"
+logging:
+  level:
+    root: INFO
+    com.hmk.crmdoem: debug
+  file:
+    path: /log/myapp.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%p] %highlight(%-5.5logger{36}) - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{35} - %msg%n"
+suffixwhitelist: jpg,jpeg,png,gif

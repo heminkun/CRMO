@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.OrdersLineMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.OrdersLine">
+		<!---->
+		<id column="odd_id" property="oddId"  />
+		<!---->
+		<result column="odd_order_id" property="oddOrderId"  />
+		<!---->
+		<result column="odd_prod_id" property="oddProdId"  />
+		<!---->
+		<result column="odd_count" property="oddCount"  />
+		<!---->
+		<result column="odd_unit" property="oddUnit"  />
+		<!---->
+		<result column="odd_price" property="oddPrice"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 odd_id,odd_order_id,odd_prod_id,odd_count,odd_unit,
+		 odd_price
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.oddId != null">
+				 and  odd_id = #{query.oddId}
+			</if>
+			<if test="query.oddOrderId != null">
+				 and  odd_order_id = #{query.oddOrderId}
+			</if>
+			<if test="query.oddProdId != null">
+				 and  odd_prod_id = #{query.oddProdId}
+			</if>
+			<if test="query.oddCount != null">
+				 and  odd_count = #{query.oddCount}
+			</if>
+			<if test="query.oddUnit != null and query.oddUnit!=''">
+				 and  odd_unit = #{query.oddUnit}
+			</if>
+			<if test="query.oddPrice != null">
+				 and  odd_price = #{query.oddPrice}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.oddUnitFuzzy!= null  and query.oddUnitFuzzy!=''">
+				 and  odd_unit like concat('%', #{query.oddUnitFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM orders_line <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM orders_line <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.OrdersLine">
+		<selectKey keyProperty="bean.oddId" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO orders_line
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.oddOrderId != null">
+				 odd_order_id,
+			</if>
+			<if test="bean.oddProdId != null">
+				 odd_prod_id,
+			</if>
+			<if test="bean.oddCount != null">
+				 odd_count,
+			</if>
+			<if test="bean.oddUnit != null">
+				 odd_unit,
+			</if>
+			<if test="bean.oddPrice != null">
+				 odd_price,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.oddOrderId!=null">
+				 #{bean.oddOrderId},
+			</if>
+			<if test="bean.oddProdId!=null">
+				 #{bean.oddProdId},
+			</if>
+			<if test="bean.oddCount!=null">
+				 #{bean.oddCount},
+			</if>
+			<if test="bean.oddUnit!=null">
+				 #{bean.oddUnit},
+			</if>
+			<if test="bean.oddPrice!=null">
+				 #{bean.oddPrice},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.OrdersLine">
+		 INSERT INTO orders_line
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.oddId != null">
+				 odd_id,
+			</if>
+			<if test="bean.oddOrderId != null">
+				 odd_order_id,
+			</if>
+			<if test="bean.oddProdId != null">
+				 odd_prod_id,
+			</if>
+			<if test="bean.oddCount != null">
+				 odd_count,
+			</if>
+			<if test="bean.oddUnit != null">
+				 odd_unit,
+			</if>
+			<if test="bean.oddPrice != null">
+				 odd_price,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.oddId!=null">
+				 #{bean.oddId},
+			</if>
+			<if test="bean.oddOrderId!=null">
+				 #{bean.oddOrderId},
+			</if>
+			<if test="bean.oddProdId!=null">
+				 #{bean.oddProdId},
+			</if>
+			<if test="bean.oddCount!=null">
+				 #{bean.oddCount},
+			</if>
+			<if test="bean.oddUnit!=null">
+				 #{bean.oddUnit},
+			</if>
+			<if test="bean.oddPrice!=null">
+				 #{bean.oddPrice},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.oddOrderId!=null">
+				 odd_order_id = VALUES(odd_order_id),
+			</if>
+			<if test="bean.oddProdId!=null">
+				 odd_prod_id = VALUES(odd_prod_id),
+			</if>
+			<if test="bean.oddCount!=null">
+				 odd_count = VALUES(odd_count),
+			</if>
+			<if test="bean.oddUnit!=null">
+				 odd_unit = VALUES(odd_unit),
+			</if>
+			<if test="bean.oddPrice!=null">
+				 odd_price = VALUES(odd_price),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.OrdersLine" useGeneratedKeys="true" keyProperty="oddId">
+		 INSERT INTO orders_line(
+			 odd_order_id,
+			 odd_prod_id,
+			 odd_count,
+			 odd_unit,
+			 odd_price
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.oddOrderId},
+				 #{item.oddProdId},
+				 #{item.oddCount},
+				 #{item.oddUnit},
+				 #{item.oddPrice}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.OrdersLine">
+		 INSERT INTO orders_line(
+			 odd_order_id,
+			 odd_prod_id,
+			 odd_count,
+			 odd_unit,
+			 odd_price
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.oddOrderId},
+				 #{item.oddProdId},
+				 #{item.oddCount},
+				 #{item.oddUnit},
+				 #{item.oddPrice}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			odd_order_id = VALUES(odd_order_id),
+			odd_prod_id = VALUES(odd_prod_id),
+			odd_count = VALUES(odd_count),
+			odd_unit = VALUES(odd_unit),
+			odd_price = VALUES(odd_price)
+	</insert>
+
+	<!-- 根据OddId修改-->
+	<update id="updateByOddId" parameterType="com.hmk.crmdoem.entity.po.OrdersLine">
+		 UPDATE orders_line
+ 		 <set> 
+			<if test="bean.oddOrderId != null">
+				 odd_order_id = #{bean.oddOrderId},
+			</if>
+			<if test="bean.oddProdId != null">
+				 odd_prod_id = #{bean.oddProdId},
+			</if>
+			<if test="bean.oddCount != null">
+				 odd_count = #{bean.oddCount},
+			</if>
+			<if test="bean.oddUnit != null">
+				 odd_unit = #{bean.oddUnit},
+			</if>
+			<if test="bean.oddPrice != null">
+				 odd_price = #{bean.oddPrice},
+			</if>
+ 		 </set>
+ 		 where odd_id=#{oddId}
+	</update>
+
+	<!-- 根据OddId删除-->
+	<delete id="deleteByOddId">
+		delete from orders_line where odd_id=#{oddId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByOddId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from orders_line where odd_id=#{oddId}
+	</select>
+
+</mapper>

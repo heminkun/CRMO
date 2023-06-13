@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.SalPlanMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.SalPlan">
+		<!---->
+		<id column="pla_id" property="plaId"  />
+		<!---->
+		<result column="pla_chc_id" property="plaChcId"  />
+		<!---->
+		<result column="pla_date" property="plaDate"  />
+		<!---->
+		<result column="pla_todo" property="plaTodo"  />
+		<!---->
+		<result column="pla_result" property="plaResult"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 pla_id,pla_chc_id,pla_date,pla_todo,pla_result
+		 
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.plaId != null">
+				 and  pla_id = #{query.plaId}
+			</if>
+			<if test="query.plaChcId != null">
+				 and  pla_chc_id = #{query.plaChcId}
+			</if>
+			<if test="query.plaDate != null and query.plaDate!=''">
+				 <![CDATA[ and  pla_date=str_to_date(#{query.plaDate}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.plaTodo != null and query.plaTodo!=''">
+				 and  pla_todo = #{query.plaTodo}
+			</if>
+			<if test="query.plaResult != null and query.plaResult!=''">
+				 and  pla_result = #{query.plaResult}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.plaDateStart!= null and query.plaDateStart!=''">
+				 <![CDATA[ and  pla_date>=str_to_date(#{query.plaDateStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.plaDateEnd!= null and query.plaDateEnd!=''">
+				 <![CDATA[ and  pla_date< date_sub(str_to_date(#{query.plaDateEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="query.plaTodoFuzzy!= null  and query.plaTodoFuzzy!=''">
+				 and  pla_todo like concat('%', #{query.plaTodoFuzzy}, '%')
+			</if>
+			<if test="query.plaResultFuzzy!= null  and query.plaResultFuzzy!=''">
+				 and  pla_result like concat('%', #{query.plaResultFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM sal_plan <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM sal_plan <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.SalPlan">
+		<selectKey keyProperty="bean.plaId" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO sal_plan
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.plaChcId != null">
+				 pla_chc_id,
+			</if>
+			<if test="bean.plaDate != null">
+				 pla_date,
+			</if>
+			<if test="bean.plaTodo != null">
+				 pla_todo,
+			</if>
+			<if test="bean.plaResult != null">
+				 pla_result,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.plaChcId!=null">
+				 #{bean.plaChcId},
+			</if>
+			<if test="bean.plaDate!=null">
+				 #{bean.plaDate},
+			</if>
+			<if test="bean.plaTodo!=null">
+				 #{bean.plaTodo},
+			</if>
+			<if test="bean.plaResult!=null">
+				 #{bean.plaResult},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.SalPlan">
+		 INSERT INTO sal_plan
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.plaId != null">
+				 pla_id,
+			</if>
+			<if test="bean.plaChcId != null">
+				 pla_chc_id,
+			</if>
+			<if test="bean.plaDate != null">
+				 pla_date,
+			</if>
+			<if test="bean.plaTodo != null">
+				 pla_todo,
+			</if>
+			<if test="bean.plaResult != null">
+				 pla_result,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.plaId!=null">
+				 #{bean.plaId},
+			</if>
+			<if test="bean.plaChcId!=null">
+				 #{bean.plaChcId},
+			</if>
+			<if test="bean.plaDate!=null">
+				 #{bean.plaDate},
+			</if>
+			<if test="bean.plaTodo!=null">
+				 #{bean.plaTodo},
+			</if>
+			<if test="bean.plaResult!=null">
+				 #{bean.plaResult},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.plaChcId!=null">
+				 pla_chc_id = VALUES(pla_chc_id),
+			</if>
+			<if test="bean.plaDate!=null">
+				 pla_date = VALUES(pla_date),
+			</if>
+			<if test="bean.plaTodo!=null">
+				 pla_todo = VALUES(pla_todo),
+			</if>
+			<if test="bean.plaResult!=null">
+				 pla_result = VALUES(pla_result),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.SalPlan" useGeneratedKeys="true" keyProperty="plaId">
+		 INSERT INTO sal_plan(
+			 pla_chc_id,
+			 pla_date,
+			 pla_todo,
+			 pla_result
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.plaChcId},
+				 #{item.plaDate},
+				 #{item.plaTodo},
+				 #{item.plaResult}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.SalPlan">
+		 INSERT INTO sal_plan(
+			 pla_chc_id,
+			 pla_date,
+			 pla_todo,
+			 pla_result
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.plaChcId},
+				 #{item.plaDate},
+				 #{item.plaTodo},
+				 #{item.plaResult}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			pla_chc_id = VALUES(pla_chc_id),
+			pla_date = VALUES(pla_date),
+			pla_todo = VALUES(pla_todo),
+			pla_result = VALUES(pla_result)
+	</insert>
+
+	<!-- 根据PlaId修改-->
+	<update id="updateByPlaId" parameterType="com.hmk.crmdoem.entity.po.SalPlan">
+		 UPDATE sal_plan
+ 		 <set> 
+			<if test="bean.plaChcId != null">
+				 pla_chc_id = #{bean.plaChcId},
+			</if>
+			<if test="bean.plaDate != null">
+				 pla_date = #{bean.plaDate},
+			</if>
+			<if test="bean.plaTodo != null">
+				 pla_todo = #{bean.plaTodo},
+			</if>
+			<if test="bean.plaResult != null">
+				 pla_result = #{bean.plaResult},
+			</if>
+ 		 </set>
+ 		 where pla_id=#{plaId}
+	</update>
+
+	<!-- 根据PlaId删除-->
+	<delete id="deleteByPlaId">
+		delete from sal_plan where pla_id=#{plaId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByPlaId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from sal_plan where pla_id=#{plaId}
+	</select>
+
+
+</mapper>

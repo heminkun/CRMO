@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.CstLinkmanMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.CstLinkman">
+		<!---->
+		<id column="lkm_id" property="lkmId"  />
+		<!---->
+		<result column="lkm_cust_no" property="lkmCustNo"  />
+		<!---->
+		<result column="lkm_cust_name" property="lkmCustName"  />
+		<!---->
+		<result column="lkm_name" property="lkmName"  />
+		<!---->
+		<result column="lkm_sex" property="lkmSex"  />
+		<!---->
+		<result column="lkm_postion" property="lkmPostion"  />
+		<!---->
+		<result column="lkm_tel" property="lkmTel"  />
+		<!---->
+		<result column="lkm_mobile" property="lkmMobile"  />
+		<!---->
+		<result column="lkm_memo" property="lkmMemo"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 lkm_id,lkm_cust_no,lkm_cust_name,lkm_name,lkm_sex,
+		 lkm_postion,lkm_tel,lkm_mobile,lkm_memo
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.lkmId != null">
+				 and  lkm_id = #{query.lkmId}
+			</if>
+			<if test="query.lkmCustNo != null and query.lkmCustNo!=''">
+				 and  lkm_cust_no = #{query.lkmCustNo}
+			</if>
+			<if test="query.lkmCustName != null and query.lkmCustName!=''">
+				 and  lkm_cust_name = #{query.lkmCustName}
+			</if>
+			<if test="query.lkmName != null and query.lkmName!=''">
+				 and  lkm_name = #{query.lkmName}
+			</if>
+			<if test="query.lkmSex != null and query.lkmSex!=''">
+				 and  lkm_sex = #{query.lkmSex}
+			</if>
+			<if test="query.lkmPostion != null and query.lkmPostion!=''">
+				 and  lkm_postion = #{query.lkmPostion}
+			</if>
+			<if test="query.lkmTel != null and query.lkmTel!=''">
+				 and  lkm_tel = #{query.lkmTel}
+			</if>
+			<if test="query.lkmMobile != null and query.lkmMobile!=''">
+				 and  lkm_mobile = #{query.lkmMobile}
+			</if>
+			<if test="query.lkmMemo != null and query.lkmMemo!=''">
+				 and  lkm_memo = #{query.lkmMemo}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.lkmCustNoFuzzy!= null  and query.lkmCustNoFuzzy!=''">
+				 and  lkm_cust_no like concat('%', #{query.lkmCustNoFuzzy}, '%')
+			</if>
+			<if test="query.lkmCustNameFuzzy!= null  and query.lkmCustNameFuzzy!=''">
+				 and  lkm_cust_name like concat('%', #{query.lkmCustNameFuzzy}, '%')
+			</if>
+			<if test="query.lkmNameFuzzy!= null  and query.lkmNameFuzzy!=''">
+				 and  lkm_name like concat('%', #{query.lkmNameFuzzy}, '%')
+			</if>
+			<if test="query.lkmSexFuzzy!= null  and query.lkmSexFuzzy!=''">
+				 and  lkm_sex like concat('%', #{query.lkmSexFuzzy}, '%')
+			</if>
+			<if test="query.lkmPostionFuzzy!= null  and query.lkmPostionFuzzy!=''">
+				 and  lkm_postion like concat('%', #{query.lkmPostionFuzzy}, '%')
+			</if>
+			<if test="query.lkmTelFuzzy!= null  and query.lkmTelFuzzy!=''">
+				 and  lkm_tel like concat('%', #{query.lkmTelFuzzy}, '%')
+			</if>
+			<if test="query.lkmMobileFuzzy!= null  and query.lkmMobileFuzzy!=''">
+				 and  lkm_mobile like concat('%', #{query.lkmMobileFuzzy}, '%')
+			</if>
+			<if test="query.lkmMemoFuzzy!= null  and query.lkmMemoFuzzy!=''">
+				 and  lkm_memo like concat('%', #{query.lkmMemoFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM cst_linkman <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM cst_linkman <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.CstLinkman">
+		<selectKey keyProperty="bean.lkmId" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO cst_linkman
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.lkmCustNo != null">
+				 lkm_cust_no,
+			</if>
+			<if test="bean.lkmCustName != null">
+				 lkm_cust_name,
+			</if>
+			<if test="bean.lkmName != null">
+				 lkm_name,
+			</if>
+			<if test="bean.lkmSex != null">
+				 lkm_sex,
+			</if>
+			<if test="bean.lkmPostion != null">
+				 lkm_postion,
+			</if>
+			<if test="bean.lkmTel != null">
+				 lkm_tel,
+			</if>
+			<if test="bean.lkmMobile != null">
+				 lkm_mobile,
+			</if>
+			<if test="bean.lkmMemo != null">
+				 lkm_memo,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.lkmCustNo!=null">
+				 #{bean.lkmCustNo},
+			</if>
+			<if test="bean.lkmCustName!=null">
+				 #{bean.lkmCustName},
+			</if>
+			<if test="bean.lkmName!=null">
+				 #{bean.lkmName},
+			</if>
+			<if test="bean.lkmSex!=null">
+				 #{bean.lkmSex},
+			</if>
+			<if test="bean.lkmPostion!=null">
+				 #{bean.lkmPostion},
+			</if>
+			<if test="bean.lkmTel!=null">
+				 #{bean.lkmTel},
+			</if>
+			<if test="bean.lkmMobile!=null">
+				 #{bean.lkmMobile},
+			</if>
+			<if test="bean.lkmMemo!=null">
+				 #{bean.lkmMemo},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.CstLinkman">
+		 INSERT INTO cst_linkman
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.lkmId != null">
+				 lkm_id,
+			</if>
+			<if test="bean.lkmCustNo != null">
+				 lkm_cust_no,
+			</if>
+			<if test="bean.lkmCustName != null">
+				 lkm_cust_name,
+			</if>
+			<if test="bean.lkmName != null">
+				 lkm_name,
+			</if>
+			<if test="bean.lkmSex != null">
+				 lkm_sex,
+			</if>
+			<if test="bean.lkmPostion != null">
+				 lkm_postion,
+			</if>
+			<if test="bean.lkmTel != null">
+				 lkm_tel,
+			</if>
+			<if test="bean.lkmMobile != null">
+				 lkm_mobile,
+			</if>
+			<if test="bean.lkmMemo != null">
+				 lkm_memo,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.lkmId!=null">
+				 #{bean.lkmId},
+			</if>
+			<if test="bean.lkmCustNo!=null">
+				 #{bean.lkmCustNo},
+			</if>
+			<if test="bean.lkmCustName!=null">
+				 #{bean.lkmCustName},
+			</if>
+			<if test="bean.lkmName!=null">
+				 #{bean.lkmName},
+			</if>
+			<if test="bean.lkmSex!=null">
+				 #{bean.lkmSex},
+			</if>
+			<if test="bean.lkmPostion!=null">
+				 #{bean.lkmPostion},
+			</if>
+			<if test="bean.lkmTel!=null">
+				 #{bean.lkmTel},
+			</if>
+			<if test="bean.lkmMobile!=null">
+				 #{bean.lkmMobile},
+			</if>
+			<if test="bean.lkmMemo!=null">
+				 #{bean.lkmMemo},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.lkmCustNo!=null">
+				 lkm_cust_no = VALUES(lkm_cust_no),
+			</if>
+			<if test="bean.lkmCustName!=null">
+				 lkm_cust_name = VALUES(lkm_cust_name),
+			</if>
+			<if test="bean.lkmName!=null">
+				 lkm_name = VALUES(lkm_name),
+			</if>
+			<if test="bean.lkmSex!=null">
+				 lkm_sex = VALUES(lkm_sex),
+			</if>
+			<if test="bean.lkmPostion!=null">
+				 lkm_postion = VALUES(lkm_postion),
+			</if>
+			<if test="bean.lkmTel!=null">
+				 lkm_tel = VALUES(lkm_tel),
+			</if>
+			<if test="bean.lkmMobile!=null">
+				 lkm_mobile = VALUES(lkm_mobile),
+			</if>
+			<if test="bean.lkmMemo!=null">
+				 lkm_memo = VALUES(lkm_memo),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.CstLinkman" useGeneratedKeys="true" keyProperty="lkmId">
+		 INSERT INTO cst_linkman(
+			 lkm_cust_no,
+			 lkm_cust_name,
+			 lkm_name,
+			 lkm_sex,
+			 lkm_postion,
+			 lkm_tel,
+			 lkm_mobile,
+			 lkm_memo
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.lkmCustNo},
+				 #{item.lkmCustName},
+				 #{item.lkmName},
+				 #{item.lkmSex},
+				 #{item.lkmPostion},
+				 #{item.lkmTel},
+				 #{item.lkmMobile},
+				 #{item.lkmMemo}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.CstLinkman">
+		 INSERT INTO cst_linkman(
+			 lkm_cust_no,
+			 lkm_cust_name,
+			 lkm_name,
+			 lkm_sex,
+			 lkm_postion,
+			 lkm_tel,
+			 lkm_mobile,
+			 lkm_memo
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.lkmCustNo},
+				 #{item.lkmCustName},
+				 #{item.lkmName},
+				 #{item.lkmSex},
+				 #{item.lkmPostion},
+				 #{item.lkmTel},
+				 #{item.lkmMobile},
+				 #{item.lkmMemo}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			lkm_cust_no = VALUES(lkm_cust_no),
+			lkm_cust_name = VALUES(lkm_cust_name),
+			lkm_name = VALUES(lkm_name),
+			lkm_sex = VALUES(lkm_sex),
+			lkm_postion = VALUES(lkm_postion),
+			lkm_tel = VALUES(lkm_tel),
+			lkm_mobile = VALUES(lkm_mobile),
+			lkm_memo = VALUES(lkm_memo)
+	</insert>
+
+	<!-- 根据LkmId修改-->
+	<update id="updateByLkmId" parameterType="com.hmk.crmdoem.entity.po.CstLinkman">
+		 UPDATE cst_linkman
+ 		 <set> 
+			<if test="bean.lkmCustNo != null">
+				 lkm_cust_no = #{bean.lkmCustNo},
+			</if>
+			<if test="bean.lkmCustName != null">
+				 lkm_cust_name = #{bean.lkmCustName},
+			</if>
+			<if test="bean.lkmName != null">
+				 lkm_name = #{bean.lkmName},
+			</if>
+			<if test="bean.lkmSex != null">
+				 lkm_sex = #{bean.lkmSex},
+			</if>
+			<if test="bean.lkmPostion != null">
+				 lkm_postion = #{bean.lkmPostion},
+			</if>
+			<if test="bean.lkmTel != null">
+				 lkm_tel = #{bean.lkmTel},
+			</if>
+			<if test="bean.lkmMobile != null">
+				 lkm_mobile = #{bean.lkmMobile},
+			</if>
+			<if test="bean.lkmMemo != null">
+				 lkm_memo = #{bean.lkmMemo},
+			</if>
+ 		 </set>
+ 		 where lkm_id=#{lkmId}
+	</update>
+
+	<!-- 根据LkmId删除-->
+	<delete id="deleteByLkmId">
+		delete from cst_linkman where lkm_id=#{lkmId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByLkmId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from cst_linkman where lkm_id=#{lkmId}
+	</select>
+	<delete id="deleteByLkmCustNoInteger">
+		delete from cst_linkman where lkm_cust_no=#{ikmCustNo}
+	</delete>
+
+</mapper>

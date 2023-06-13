@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.ProductMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.Product">
+		<!---->
+		<id column="prod_id" property="prodId"  />
+		<!---->
+		<result column="prod_name" property="prodName"  />
+		<!---->
+		<result column="prod_type" property="prodType"  />
+		<!---->
+		<result column="prod_batch" property="prodBatch"  />
+		<!---->
+		<result column="prod_unit" property="prodUnit"  />
+		<!---->
+		<result column="prod_price" property="prodPrice"  />
+		<!---->
+		<result column="prod_memo" property="prodMemo"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 prod_id,prod_name,prod_type,prod_batch,prod_unit,
+		 prod_price,prod_memo
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.prodId != null">
+				 and  prod_id = #{query.prodId}
+			</if>
+			<if test="query.prodName != null and query.prodName!=''">
+				 and  prod_name = #{query.prodName}
+			</if>
+			<if test="query.prodType != null and query.prodType!=''">
+				 and  prod_type = #{query.prodType}
+			</if>
+			<if test="query.prodBatch != null and query.prodBatch!=''">
+				 and  prod_batch = #{query.prodBatch}
+			</if>
+			<if test="query.prodUnit != null and query.prodUnit!=''">
+				 and  prod_unit = #{query.prodUnit}
+			</if>
+			<if test="query.prodPrice != null">
+				 and  prod_price = #{query.prodPrice}
+			</if>
+			<if test="query.prodMemo != null and query.prodMemo!=''">
+				 and  prod_memo = #{query.prodMemo}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.prodNameFuzzy!= null  and query.prodNameFuzzy!=''">
+				 and  prod_name like concat('%', #{query.prodNameFuzzy}, '%')
+			</if>
+			<if test="query.prodTypeFuzzy!= null  and query.prodTypeFuzzy!=''">
+				 and  prod_type like concat('%', #{query.prodTypeFuzzy}, '%')
+			</if>
+			<if test="query.prodBatchFuzzy!= null  and query.prodBatchFuzzy!=''">
+				 and  prod_batch like concat('%', #{query.prodBatchFuzzy}, '%')
+			</if>
+			<if test="query.prodUnitFuzzy!= null  and query.prodUnitFuzzy!=''">
+				 and  prod_unit like concat('%', #{query.prodUnitFuzzy}, '%')
+			</if>
+			<if test="query.prodMemoFuzzy!= null  and query.prodMemoFuzzy!=''">
+				 and  prod_memo like concat('%', #{query.prodMemoFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM product <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM product <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.Product">
+		<selectKey keyProperty="bean.prodId" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO product
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.prodName != null">
+				 prod_name,
+			</if>
+			<if test="bean.prodType != null">
+				 prod_type,
+			</if>
+			<if test="bean.prodBatch != null">
+				 prod_batch,
+			</if>
+			<if test="bean.prodUnit != null">
+				 prod_unit,
+			</if>
+			<if test="bean.prodPrice != null">
+				 prod_price,
+			</if>
+			<if test="bean.prodMemo != null">
+				 prod_memo,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.prodName!=null">
+				 #{bean.prodName},
+			</if>
+			<if test="bean.prodType!=null">
+				 #{bean.prodType},
+			</if>
+			<if test="bean.prodBatch!=null">
+				 #{bean.prodBatch},
+			</if>
+			<if test="bean.prodUnit!=null">
+				 #{bean.prodUnit},
+			</if>
+			<if test="bean.prodPrice!=null">
+				 #{bean.prodPrice},
+			</if>
+			<if test="bean.prodMemo!=null">
+				 #{bean.prodMemo},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.Product">
+		 INSERT INTO product
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.prodId != null">
+				 prod_id,
+			</if>
+			<if test="bean.prodName != null">
+				 prod_name,
+			</if>
+			<if test="bean.prodType != null">
+				 prod_type,
+			</if>
+			<if test="bean.prodBatch != null">
+				 prod_batch,
+			</if>
+			<if test="bean.prodUnit != null">
+				 prod_unit,
+			</if>
+			<if test="bean.prodPrice != null">
+				 prod_price,
+			</if>
+			<if test="bean.prodMemo != null">
+				 prod_memo,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.prodId!=null">
+				 #{bean.prodId},
+			</if>
+			<if test="bean.prodName!=null">
+				 #{bean.prodName},
+			</if>
+			<if test="bean.prodType!=null">
+				 #{bean.prodType},
+			</if>
+			<if test="bean.prodBatch!=null">
+				 #{bean.prodBatch},
+			</if>
+			<if test="bean.prodUnit!=null">
+				 #{bean.prodUnit},
+			</if>
+			<if test="bean.prodPrice!=null">
+				 #{bean.prodPrice},
+			</if>
+			<if test="bean.prodMemo!=null">
+				 #{bean.prodMemo},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.prodName!=null">
+				 prod_name = VALUES(prod_name),
+			</if>
+			<if test="bean.prodType!=null">
+				 prod_type = VALUES(prod_type),
+			</if>
+			<if test="bean.prodBatch!=null">
+				 prod_batch = VALUES(prod_batch),
+			</if>
+			<if test="bean.prodUnit!=null">
+				 prod_unit = VALUES(prod_unit),
+			</if>
+			<if test="bean.prodPrice!=null">
+				 prod_price = VALUES(prod_price),
+			</if>
+			<if test="bean.prodMemo!=null">
+				 prod_memo = VALUES(prod_memo),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.Product" useGeneratedKeys="true" keyProperty="prodId">
+		 INSERT INTO product(
+			 prod_name,
+			 prod_type,
+			 prod_batch,
+			 prod_unit,
+			 prod_price,
+			 prod_memo
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.prodName},
+				 #{item.prodType},
+				 #{item.prodBatch},
+				 #{item.prodUnit},
+				 #{item.prodPrice},
+				 #{item.prodMemo}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.Product">
+		 INSERT INTO product(
+			 prod_name,
+			 prod_type,
+			 prod_batch,
+			 prod_unit,
+			 prod_price,
+			 prod_memo
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.prodName},
+				 #{item.prodType},
+				 #{item.prodBatch},
+				 #{item.prodUnit},
+				 #{item.prodPrice},
+				 #{item.prodMemo}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			prod_name = VALUES(prod_name),
+			prod_type = VALUES(prod_type),
+			prod_batch = VALUES(prod_batch),
+			prod_unit = VALUES(prod_unit),
+			prod_price = VALUES(prod_price),
+			prod_memo = VALUES(prod_memo)
+	</insert>
+
+	<!-- 根据ProdId修改-->
+	<update id="updateByProdId" parameterType="com.hmk.crmdoem.entity.po.Product">
+		 UPDATE product
+ 		 <set> 
+			<if test="bean.prodName != null">
+				 prod_name = #{bean.prodName},
+			</if>
+			<if test="bean.prodType != null">
+				 prod_type = #{bean.prodType},
+			</if>
+			<if test="bean.prodBatch != null">
+				 prod_batch = #{bean.prodBatch},
+			</if>
+			<if test="bean.prodUnit != null">
+				 prod_unit = #{bean.prodUnit},
+			</if>
+			<if test="bean.prodPrice != null">
+				 prod_price = #{bean.prodPrice},
+			</if>
+			<if test="bean.prodMemo != null">
+				 prod_memo = #{bean.prodMemo},
+			</if>
+ 		 </set>
+ 		 where prod_id=#{prodId}
+	</update>
+
+	<!-- 根据ProdId删除-->
+	<delete id="deleteByProdId">
+		delete from product where prod_id=#{prodId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByProdId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from product where prod_id=#{prodId}
+	</select>
+
+</mapper>

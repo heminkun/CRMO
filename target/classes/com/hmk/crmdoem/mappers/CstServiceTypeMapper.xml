@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.CstServiceTypeMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.CstServiceType">
+		<!---->
+		<id column="cst_id" property="cstId"  />
+		<!---->
+		<result column="cst_service_type" property="cstServiceType"  />
+		<!---->
+		<result column="cst_amount" property="cstAmount"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 cst_id,cst_service_type,cst_amount
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.cstId != null">
+				 and  cst_id = #{query.cstId}
+			</if>
+			<if test="query.cstServiceType != null and query.cstServiceType!=''">
+				 and  cst_service_type = #{query.cstServiceType}
+			</if>
+			<if test="query.cstAmount != null and query.cstAmount!=''">
+				 and  cst_amount = #{query.cstAmount}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.cstServiceTypeFuzzy!= null  and query.cstServiceTypeFuzzy!=''">
+				 and  cst_service_type like concat('%', #{query.cstServiceTypeFuzzy}, '%')
+			</if>
+			<if test="query.cstAmountFuzzy!= null  and query.cstAmountFuzzy!=''">
+				 and  cst_amount like concat('%', #{query.cstAmountFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM cst_service_type <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM cst_service_type <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.CstServiceType">
+		<selectKey keyProperty="bean.cstId" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO cst_service_type
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.cstServiceType != null">
+				 cst_service_type,
+			</if>
+			<if test="bean.cstAmount != null">
+				 cst_amount,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.cstServiceType!=null">
+				 #{bean.cstServiceType},
+			</if>
+			<if test="bean.cstAmount!=null">
+				 #{bean.cstAmount},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.CstServiceType">
+		 INSERT INTO cst_service_type
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.cstId != null">
+				 cst_id,
+			</if>
+			<if test="bean.cstServiceType != null">
+				 cst_service_type,
+			</if>
+			<if test="bean.cstAmount != null">
+				 cst_amount,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.cstId!=null">
+				 #{bean.cstId},
+			</if>
+			<if test="bean.cstServiceType!=null">
+				 #{bean.cstServiceType},
+			</if>
+			<if test="bean.cstAmount!=null">
+				 #{bean.cstAmount},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.cstServiceType!=null">
+				 cst_service_type = VALUES(cst_service_type),
+			</if>
+			<if test="bean.cstAmount!=null">
+				 cst_amount = VALUES(cst_amount),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.CstServiceType" useGeneratedKeys="true" keyProperty="cstId">
+		 INSERT INTO cst_service_type(
+			 cst_service_type,
+			 cst_amount
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.cstServiceType},
+				 #{item.cstAmount}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.CstServiceType">
+		 INSERT INTO cst_service_type(
+			 cst_service_type,
+			 cst_amount
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.cstServiceType},
+				 #{item.cstAmount}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			cst_service_type = VALUES(cst_service_type),
+			cst_amount = VALUES(cst_amount)
+	</insert>
+
+	<!-- 根据CstId修改-->
+	<update id="updateByCstId" parameterType="com.hmk.crmdoem.entity.po.CstServiceType">
+		 UPDATE cst_service_type
+ 		 <set> 
+			<if test="bean.cstServiceType != null">
+				 cst_service_type = #{bean.cstServiceType},
+			</if>
+			<if test="bean.cstAmount != null">
+				 cst_amount = #{bean.cstAmount},
+			</if>
+ 		 </set>
+ 		 where cst_id=#{cstId}
+	</update>
+
+	<!-- 根据CstId删除-->
+	<delete id="deleteByCstId">
+		delete from cst_service_type where cst_id=#{cstId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByCstId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from cst_service_type where cst_id=#{cstId}
+	</select>
+
+	<select id="selectAll" resultMap="base_result_map">
+		select * from cst_service_type
+	</select>
+</mapper>

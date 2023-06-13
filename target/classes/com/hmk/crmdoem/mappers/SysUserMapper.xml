@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.SysUserMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.SysUser">
+		<!---->
+		<id column="user_id" property="userId"  />
+		<!---->
+		<result column="user_name" property="userName"  />
+		<!---->
+		<result column="user_password" property="userPassword"  />
+		<!---->
+		<result column="user_role_id" property="userRoleId"  />
+		<!---->
+		<result column="user_flag" property="userFlag"  />
+		<!---->
+		<result column="user_ico" property="userIco"  />
+		<!---->
+		<result column="user_email" property="userEmail"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 user_id,user_name,user_password,user_role_id,user_flag,
+		 user_ico,user_email
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.userId != null">
+				 and  user_id = #{query.userId}
+			</if>
+			<if test="query.userName != null and query.userName!=''">
+				 and  user_name = #{query.userName}
+			</if>
+			<if test="query.userPassword != null and query.userPassword!=''">
+				 and  user_password = #{query.userPassword}
+			</if>
+			<if test="query.userRoleId != null">
+				 and  user_role_id = #{query.userRoleId}
+			</if>
+			<if test="query.userFlag != null">
+				 and  user_flag = #{query.userFlag}
+			</if>
+			<if test="query.userIco != null and query.userIco!=''">
+				 and  user_ico = #{query.userIco}
+			</if>
+			<if test="query.userEmail != null and query.userEmail!=''">
+				 and  user_email = #{query.userEmail}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.userNameFuzzy!= null  and query.userNameFuzzy!=''">
+				 and  user_name like concat('%', #{query.userNameFuzzy}, '%')
+			</if>
+			<if test="query.userPasswordFuzzy!= null  and query.userPasswordFuzzy!=''">
+				 and  user_password like concat('%', #{query.userPasswordFuzzy}, '%')
+			</if>
+			<if test="query.userIcoFuzzy!= null  and query.userIcoFuzzy!=''">
+				 and  user_ico like concat('%', #{query.userIcoFuzzy}, '%')
+			</if>
+			<if test="query.userEmailFuzzy!= null  and query.userEmailFuzzy!=''">
+				 and  user_email like concat('%', #{query.userEmailFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM sys_user <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM sys_user <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.SysUser">
+		<selectKey keyProperty="bean.userId" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO sys_user
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.userName != null">
+				 user_name,
+			</if>
+			<if test="bean.userPassword != null">
+				 user_password,
+			</if>
+			<if test="bean.userRoleId != null">
+				 user_role_id,
+			</if>
+			<if test="bean.userFlag != null">
+				 user_flag,
+			</if>
+			<if test="bean.userIco != null">
+				 user_ico,
+			</if>
+			<if test="bean.userEmail != null">
+				 user_email,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.userName!=null">
+				 #{bean.userName},
+			</if>
+			<if test="bean.userPassword!=null">
+				 #{bean.userPassword},
+			</if>
+			<if test="bean.userRoleId!=null">
+				 #{bean.userRoleId},
+			</if>
+			<if test="bean.userFlag!=null">
+				 #{bean.userFlag},
+			</if>
+			<if test="bean.userIco!=null">
+				 #{bean.userIco},
+			</if>
+			<if test="bean.userEmail!=null">
+				 #{bean.userEmail},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.SysUser">
+		 INSERT INTO sys_user
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.userId != null">
+				 user_id,
+			</if>
+			<if test="bean.userName != null">
+				 user_name,
+			</if>
+			<if test="bean.userPassword != null">
+				 user_password,
+			</if>
+			<if test="bean.userRoleId != null">
+				 user_role_id,
+			</if>
+			<if test="bean.userFlag != null">
+				 user_flag,
+			</if>
+			<if test="bean.userIco != null">
+				 user_ico,
+			</if>
+			<if test="bean.userEmail != null">
+				 user_email,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.userId!=null">
+				 #{bean.userId},
+			</if>
+			<if test="bean.userName!=null">
+				 #{bean.userName},
+			</if>
+			<if test="bean.userPassword!=null">
+				 #{bean.userPassword},
+			</if>
+			<if test="bean.userRoleId!=null">
+				 #{bean.userRoleId},
+			</if>
+			<if test="bean.userFlag!=null">
+				 #{bean.userFlag},
+			</if>
+			<if test="bean.userIco!=null">
+				 #{bean.userIco},
+			</if>
+			<if test="bean.userEmail!=null">
+				 #{bean.userEmail},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.userName!=null">
+				 user_name = VALUES(user_name),
+			</if>
+			<if test="bean.userPassword!=null">
+				 user_password = VALUES(user_password),
+			</if>
+			<if test="bean.userRoleId!=null">
+				 user_role_id = VALUES(user_role_id),
+			</if>
+			<if test="bean.userFlag!=null">
+				 user_flag = VALUES(user_flag),
+			</if>
+			<if test="bean.userIco!=null">
+				 user_ico = VALUES(user_ico),
+			</if>
+			<if test="bean.userEmail!=null">
+				 user_email = VALUES(user_email),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.SysUser" useGeneratedKeys="true" keyProperty="userId">
+		 INSERT INTO sys_user(
+			 user_name,
+			 user_password,
+			 user_role_id,
+			 user_flag,
+			 user_ico,
+			 user_email
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.userName},
+				 #{item.userPassword},
+				 #{item.userRoleId},
+				 #{item.userFlag},
+				 #{item.userIco},
+				 #{item.userEmail}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.SysUser">
+		 INSERT INTO sys_user(
+			 user_name,
+			 user_password,
+			 user_role_id,
+			 user_flag,
+			 user_ico,
+			 user_email
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.userName},
+				 #{item.userPassword},
+				 #{item.userRoleId},
+				 #{item.userFlag},
+				 #{item.userIco},
+				 #{item.userEmail}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			user_name = VALUES(user_name),
+			user_password = VALUES(user_password),
+			user_role_id = VALUES(user_role_id),
+			user_flag = VALUES(user_flag),
+			user_ico = VALUES(user_ico),
+			user_email = VALUES(user_email)
+	</insert>
+
+	<!-- 根据UserId修改-->
+	<update id="updateByUserId" parameterType="com.hmk.crmdoem.entity.po.SysUser">
+		 UPDATE sys_user
+ 		 <set> 
+			<if test="bean.userName != null">
+				 user_name = #{bean.userName},
+			</if>
+			<if test="bean.userPassword != null">
+				 user_password = #{bean.userPassword},
+			</if>
+			<if test="bean.userRoleId != null">
+				 user_role_id = #{bean.userRoleId},
+			</if>
+			<if test="bean.userFlag != null">
+				 user_flag = #{bean.userFlag},
+			</if>
+			<if test="bean.userIco != null">
+				 user_ico = #{bean.userIco},
+			</if>
+			<if test="bean.userEmail != null">
+				 user_email = #{bean.userEmail},
+			</if>
+ 		 </set>
+ 		 where user_id=#{userId}
+	</update>
+
+	<!-- 根据UserId删除-->
+	<delete id="deleteByUserId">
+		delete from sys_user where user_id=#{userId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByUserId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from sys_user where user_id=#{userId}
+	</select>
+
+	<select id="selectLoginByEmail" resultMap="base_result_map">
+		select * from sys_user where user_email=#{userEmail} and user_password=#{userPassword}
+	</select>
+	<select id="selectLoginByUsername" resultMap="base_result_map">
+		select * from sys_user where user_name=#{userName} and user_password=#{userPassword}
+	</select>
+	<update id="updateByUserNameEmail">
+		update sys_user set user_name=#{userName} where user_email=#{userEmail}
+	</update>
+	<select id="selectByUserEmail" resultMap="base_result_map">
+		select * from sys_user where user_email=#{userEmail}
+	</select>
+	<update id="updateEmailByEmail">
+		update sys_user set user_email=#{newEmail} where user_email=#{oldEmail}
+	</update>
+	<select id="selectPasswordByEmail" resultMap="base_result_map">
+		select * from sys_user where user_email=#{email} and user_password=#{password}
+	</select>
+	<update id="updatePasswordByEmail">
+		update sys_user set user_password=#{newPassword} where user_email=#{email}
+	</update>
+	<select id="selectPassByPass" resultMap="base_result_map">
+		select * from sys_user where user_password=#{password}
+	</select>
+	<update id="updateUserIcoByID">
+		update sys_user set user_ico=#{ico} where user_id=#{id}
+	</update>
+</mapper>

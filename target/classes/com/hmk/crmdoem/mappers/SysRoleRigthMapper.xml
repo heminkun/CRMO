@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.SysRoleRigthMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.SysRoleRigth">
+		<!---->
+		<result column="rf_role_id" property="rfRoleId"  />
+		<!---->
+		<result column="rf_right_id" property="rfRightId"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 rf_role_id,rf_right_id
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.rfRoleId != null">
+				 and  rf_role_id = #{query.rfRoleId}
+			</if>
+			<if test="query.rfRightId != null">
+				 and  rf_right_id = #{query.rfRightId}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM sys_role_rigth <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM sys_role_rigth <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.SysRoleRigth">
+		 INSERT INTO sys_role_rigth
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.rfRoleId != null">
+				 rf_role_id,
+			</if>
+			<if test="bean.rfRightId != null">
+				 rf_right_id,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.rfRoleId!=null">
+				 #{bean.rfRoleId},
+			</if>
+			<if test="bean.rfRightId!=null">
+				 #{bean.rfRightId},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.SysRoleRigth">
+		 INSERT INTO sys_role_rigth
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.rfRoleId != null">
+				 rf_role_id,
+			</if>
+			<if test="bean.rfRightId != null">
+				 rf_right_id,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.rfRoleId!=null">
+				 #{bean.rfRoleId},
+			</if>
+			<if test="bean.rfRightId!=null">
+				 #{bean.rfRightId},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.rfRoleId!=null">
+				 rf_role_id = VALUES(rf_role_id),
+			</if>
+			<if test="bean.rfRightId!=null">
+				 rf_right_id = VALUES(rf_right_id),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.SysRoleRigth">
+		 INSERT INTO sys_role_rigth(
+			 rf_role_id,
+			 rf_right_id
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.rfRoleId},
+				 #{item.rfRightId}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.SysRoleRigth">
+		 INSERT INTO sys_role_rigth(
+			 rf_role_id,
+			 rf_right_id
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.rfRoleId},
+				 #{item.rfRightId}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			rf_role_id = VALUES(rf_role_id),
+			rf_right_id = VALUES(rf_right_id)
+	</insert>
+
+</mapper>

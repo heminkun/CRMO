@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.CstActivityMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.CstActivity">
+		<!---->
+		<id column="atv_id" property="atvId"  />
+		<!---->
+		<result column="atv_cust_no" property="atvCustNo"  />
+		<!---->
+		<result column="atv_cust_name" property="atvCustName"  />
+		<!---->
+		<result column="atv_date" property="atvDate"  />
+		<!---->
+		<result column="atv_place" property="atvPlace"  />
+		<!---->
+		<result column="atv_title" property="atvTitle"  />
+		<!---->
+		<result column="atv_desc" property="atvDesc"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 atv_id,atv_cust_no,atv_cust_name,atv_date,atv_place,
+		 atv_title,atv_desc
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.atvId != null">
+				 and  atv_id = #{query.atvId}
+			</if>
+			<if test="query.atvCustNo != null and query.atvCustNo!=''">
+				 and  atv_cust_no = #{query.atvCustNo}
+			</if>
+			<if test="query.atvCustName != null and query.atvCustName!=''">
+				 and  atv_cust_name = #{query.atvCustName}
+			</if>
+			<if test="query.atvDate != null and query.atvDate!=''">
+				 <![CDATA[ and  atv_date=str_to_date(#{query.atvDate}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.atvPlace != null and query.atvPlace!=''">
+				 and  atv_place = #{query.atvPlace}
+			</if>
+			<if test="query.atvTitle != null and query.atvTitle!=''">
+				 and  atv_title = #{query.atvTitle}
+			</if>
+			<if test="query.atvDesc != null and query.atvDesc!=''">
+				 and  atv_desc = #{query.atvDesc}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.atvCustNoFuzzy!= null  and query.atvCustNoFuzzy!=''">
+				 and  atv_cust_no like concat('%', #{query.atvCustNoFuzzy}, '%')
+			</if>
+			<if test="query.atvCustNameFuzzy!= null  and query.atvCustNameFuzzy!=''">
+				 and  atv_cust_name like concat('%', #{query.atvCustNameFuzzy}, '%')
+			</if>
+			<if test="query.atvDateStart!= null and query.atvDateStart!=''">
+				 <![CDATA[ and  atv_date>=str_to_date(#{query.atvDateStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.atvDateEnd!= null and query.atvDateEnd!=''">
+				 <![CDATA[ and  atv_date< date_sub(str_to_date(#{query.atvDateEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="query.atvPlaceFuzzy!= null  and query.atvPlaceFuzzy!=''">
+				 and  atv_place like concat('%', #{query.atvPlaceFuzzy}, '%')
+			</if>
+			<if test="query.atvTitleFuzzy!= null  and query.atvTitleFuzzy!=''">
+				 and  atv_title like concat('%', #{query.atvTitleFuzzy}, '%')
+			</if>
+			<if test="query.atvDescFuzzy!= null  and query.atvDescFuzzy!=''">
+				 and  atv_desc like concat('%', #{query.atvDescFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM cst_activity <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM cst_activity <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.CstActivity">
+		<selectKey keyProperty="bean.atvId" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO cst_activity
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.atvCustNo != null">
+				 atv_cust_no,
+			</if>
+			<if test="bean.atvCustName != null">
+				 atv_cust_name,
+			</if>
+			<if test="bean.atvDate != null">
+				 atv_date,
+			</if>
+			<if test="bean.atvPlace != null">
+				 atv_place,
+			</if>
+			<if test="bean.atvTitle != null">
+				 atv_title,
+			</if>
+			<if test="bean.atvDesc != null">
+				 atv_desc,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.atvCustNo!=null">
+				 #{bean.atvCustNo},
+			</if>
+			<if test="bean.atvCustName!=null">
+				 #{bean.atvCustName},
+			</if>
+			<if test="bean.atvDate!=null">
+				 #{bean.atvDate},
+			</if>
+			<if test="bean.atvPlace!=null">
+				 #{bean.atvPlace},
+			</if>
+			<if test="bean.atvTitle!=null">
+				 #{bean.atvTitle},
+			</if>
+			<if test="bean.atvDesc!=null">
+				 #{bean.atvDesc},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.CstActivity">
+		 INSERT INTO cst_activity
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.atvId != null">
+				 atv_id,
+			</if>
+			<if test="bean.atvCustNo != null">
+				 atv_cust_no,
+			</if>
+			<if test="bean.atvCustName != null">
+				 atv_cust_name,
+			</if>
+			<if test="bean.atvDate != null">
+				 atv_date,
+			</if>
+			<if test="bean.atvPlace != null">
+				 atv_place,
+			</if>
+			<if test="bean.atvTitle != null">
+				 atv_title,
+			</if>
+			<if test="bean.atvDesc != null">
+				 atv_desc,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.atvId!=null">
+				 #{bean.atvId},
+			</if>
+			<if test="bean.atvCustNo!=null">
+				 #{bean.atvCustNo},
+			</if>
+			<if test="bean.atvCustName!=null">
+				 #{bean.atvCustName},
+			</if>
+			<if test="bean.atvDate!=null">
+				 #{bean.atvDate},
+			</if>
+			<if test="bean.atvPlace!=null">
+				 #{bean.atvPlace},
+			</if>
+			<if test="bean.atvTitle!=null">
+				 #{bean.atvTitle},
+			</if>
+			<if test="bean.atvDesc!=null">
+				 #{bean.atvDesc},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.atvCustNo!=null">
+				 atv_cust_no = VALUES(atv_cust_no),
+			</if>
+			<if test="bean.atvCustName!=null">
+				 atv_cust_name = VALUES(atv_cust_name),
+			</if>
+			<if test="bean.atvDate!=null">
+				 atv_date = VALUES(atv_date),
+			</if>
+			<if test="bean.atvPlace!=null">
+				 atv_place = VALUES(atv_place),
+			</if>
+			<if test="bean.atvTitle!=null">
+				 atv_title = VALUES(atv_title),
+			</if>
+			<if test="bean.atvDesc!=null">
+				 atv_desc = VALUES(atv_desc),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.CstActivity" useGeneratedKeys="true" keyProperty="atvId">
+		 INSERT INTO cst_activity(
+			 atv_cust_no,
+			 atv_cust_name,
+			 atv_date,
+			 atv_place,
+			 atv_title,
+			 atv_desc
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.atvCustNo},
+				 #{item.atvCustName},
+				 #{item.atvDate},
+				 #{item.atvPlace},
+				 #{item.atvTitle},
+				 #{item.atvDesc}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.CstActivity">
+		 INSERT INTO cst_activity(
+			 atv_cust_no,
+			 atv_cust_name,
+			 atv_date,
+			 atv_place,
+			 atv_title,
+			 atv_desc
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.atvCustNo},
+				 #{item.atvCustName},
+				 #{item.atvDate},
+				 #{item.atvPlace},
+				 #{item.atvTitle},
+				 #{item.atvDesc}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			atv_cust_no = VALUES(atv_cust_no),
+			atv_cust_name = VALUES(atv_cust_name),
+			atv_date = VALUES(atv_date),
+			atv_place = VALUES(atv_place),
+			atv_title = VALUES(atv_title),
+			atv_desc = VALUES(atv_desc)
+	</insert>
+
+	<!-- 根据AtvId修改-->
+	<update id="updateByAtvId" parameterType="com.hmk.crmdoem.entity.po.CstActivity">
+		 UPDATE cst_activity
+ 		 <set> 
+			<if test="bean.atvCustNo != null">
+				 atv_cust_no = #{bean.atvCustNo},
+			</if>
+			<if test="bean.atvCustName != null">
+				 atv_cust_name = #{bean.atvCustName},
+			</if>
+			<if test="bean.atvDate != null">
+				 atv_date = #{bean.atvDate},
+			</if>
+			<if test="bean.atvPlace != null">
+				 atv_place = #{bean.atvPlace},
+			</if>
+			<if test="bean.atvTitle != null">
+				 atv_title = #{bean.atvTitle},
+			</if>
+			<if test="bean.atvDesc != null">
+				 atv_desc = #{bean.atvDesc},
+			</if>
+ 		 </set>
+ 		 where atv_id=#{atvId}
+	</update>
+
+	<!-- 根据AtvId删除-->
+	<delete id="deleteByAtvId">
+		delete from cst_activity where atv_id=#{atvId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByAtvId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from cst_activity where atv_id=#{atvId}
+	</select>
+
+	<delete id="deleteByAtvCustNoInteger">
+		delete from cst_activity where atv_cust_no=#{atvCustNo}
+	</delete>
+</mapper>
