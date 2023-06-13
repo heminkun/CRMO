@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.SalChanceMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.SalChance">
+		<!---->
+		<id column="chc_id" property="chcId"  />
+		<!---->
+		<result column="chc_source" property="chcSource"  />
+		<!---->
+		<result column="chc_cust_name" property="chcCustName"  />
+		<!---->
+		<result column="chc_title" property="chcTitle"  />
+		<!---->
+		<result column="chc_rate" property="chcRate"  />
+		<!---->
+		<result column="chc_linkman" property="chcLinkman"  />
+		<!---->
+		<result column="chc_tel" property="chcTel"  />
+		<!---->
+		<result column="chc_desc" property="chcDesc"  />
+		<!---->
+		<result column="chc_create_id" property="chcCreateId"  />
+		<!---->
+		<result column="chc_create_by" property="chcCreateBy"  />
+		<!---->
+		<result column="chc_create_date" property="chcCreateDate"  />
+		<!---->
+		<result column="chc_due_id" property="chcDueId"  />
+		<!---->
+		<result column="chc_due_to" property="chcDueTo"  />
+		<!---->
+		<result column="chc_due_date" property="chcDueDate"  />
+		<!---->
+		<result column="chc_status" property="chcStatus"  />
+	</resultMap>
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 chc_id,chc_source,chc_cust_name,chc_title,chc_rate,
+		 chc_linkman,chc_tel,chc_desc,chc_create_id,chc_create_by,
+		 chc_create_date,chc_due_id,chc_due_to,chc_due_date,chc_status
+	</sql>
+
+
+
+	<sql id="base_condition_filed">
+			<if test="query.chcId != null">
+				 and  chc_id = #{query.chcId}
+			</if>
+			<if test="query.chcSource != null and query.chcSource!=''">
+				 and  chc_source = #{query.chcSource}
+			</if>
+			<if test="query.chcCustName != null and query.chcCustName!=''">
+				 and  chc_cust_name = #{query.chcCustName}
+			</if>
+			<if test="query.chcTitle != null and query.chcTitle!=''">
+				 and  chc_title = #{query.chcTitle}
+			</if>
+			<if test="query.chcRate != null">
+				 and  chc_rate = #{query.chcRate}
+			</if>
+			<if test="query.chcLinkman != null and query.chcLinkman!=''">
+				 and  chc_linkman = #{query.chcLinkman}
+			</if>
+			<if test="query.chcTel != null and query.chcTel!=''">
+				 and  chc_tel = #{query.chcTel}
+			</if>
+			<if test="query.chcDesc != null and query.chcDesc!=''">
+				 and  chc_desc = #{query.chcDesc}
+			</if>
+			<if test="query.chcCreateId != null">
+				 and  chc_create_id = #{query.chcCreateId}
+			</if>
+			<if test="query.chcCreateBy != null and query.chcCreateBy!=''">
+				 and  chc_create_by = #{query.chcCreateBy}
+			</if>
+			<if test="query.chcCreateDate != null and query.chcCreateDate!=''">
+				 <![CDATA[ and  chc_create_date=str_to_date(#{query.chcCreateDate}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.chcDueId != null">
+				 and  chc_due_id = #{query.chcDueId}
+			</if>
+			<if test="query.chcDueTo != null and query.chcDueTo!=''">
+				 and  chc_due_to = #{query.chcDueTo}
+			</if>
+			<if test="query.chcDueDate != null and query.chcDueDate!=''">
+				 <![CDATA[ and  chc_due_date=str_to_date(#{query.chcDueDate}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.chcStatus != null">
+				 and  chc_status = #{query.chcStatus}
+			</if>
+	</sql>
+
+	<sql id="base_condition_filed2">
+		<if test="query.chcId != null">
+			and  chc_id = #{query.chcId}
+		</if>
+		<if test="query.chcSource != null and query.chcSource!=''">
+			and  chc_source = #{query.chcSource}
+		</if>
+		<if test="query.chcCustName != null and query.chcCustName!=''">
+			and  chc_cust_name = #{query.chcCustName}
+		</if>
+		<if test="query.chcTitle != null and query.chcTitle!=''">
+			and  chc_title = #{query.chcTitle}
+		</if>
+		<if test="query.chcRate != null">
+			and  chc_rate = #{query.chcRate}
+		</if>
+		<if test="query.chcLinkman != null and query.chcLinkman!=''">
+			and  chc_linkman = #{query.chcLinkman}
+		</if>
+		<if test="query.chcTel != null and query.chcTel!=''">
+			and  chc_tel = #{query.chcTel}
+		</if>
+		<if test="query.chcDesc != null and query.chcDesc!=''">
+			and  chc_desc = #{query.chcDesc}
+		</if>
+		<if test="query.chcCreateId != null">
+			and  chc_create_id = #{query.chcCreateId}
+		</if>
+		<if test="query.chcCreateBy != null and query.chcCreateBy!=''">
+			and  chc_create_by = #{query.chcCreateBy}
+		</if>
+		<if test="query.chcCreateDate != null and query.chcCreateDate!=''">
+			<![CDATA[ and  chc_create_date=str_to_date(#{query.chcCreateDate}, '%Y-%m-%d') ]]>
+		</if>
+		<if test="query.chcDueId != null">
+			and  chc_due_id = #{query.chcDueId}
+		</if>
+		<if test="query.chcDueTo != null and query.chcDueTo!=''">
+			and  chc_due_to = #{query.chcDueTo}
+		</if>
+		<if test="query.chcDueDate != null and query.chcDueDate!=''">
+			<![CDATA[ and  chc_due_date=str_to_date(#{query.chcDueDate}, '%Y-%m-%d') ]]>
+		</if>
+		<if test="query.chcStatus != null">
+			and  chc_status != #{query.chcStatus}
+		</if>
+	</sql>
+
+
+	<sql id="base_condition_filed3">
+		<if test="query.chcId != null">
+			and  chc_id = #{query.chcId}
+		</if>
+		<if test="query.chcSource != null and query.chcSource!=''">
+			and  chc_source = #{query.chcSource}
+		</if>
+		<if test="query.chcCustName != null and query.chcCustName!=''">
+			and  chc_cust_name = #{query.chcCustName}
+		</if>
+		<if test="query.chcTitle != null and query.chcTitle!=''">
+			and  chc_title = #{query.chcTitle}
+		</if>
+		<if test="query.chcRate != null">
+			and  chc_rate = #{query.chcRate}
+		</if>
+		<if test="query.chcLinkman != null and query.chcLinkman!=''">
+			and  chc_linkman = #{query.chcLinkman}
+		</if>
+		<if test="query.chcTel != null and query.chcTel!=''">
+			and  chc_tel = #{query.chcTel}
+		</if>
+		<if test="query.chcDesc != null and query.chcDesc!=''">
+			and  chc_desc = #{query.chcDesc}
+		</if>
+		<if test="query.chcCreateId != null">
+			and  chc_create_id = #{query.chcCreateId}
+		</if>
+		<if test="query.chcCreateBy != null and query.chcCreateBy!=''">
+			and  chc_create_by = #{query.chcCreateBy}
+		</if>
+		<if test="query.chcCreateDate != null and query.chcCreateDate!=''">
+			<![CDATA[ and  chc_create_date=str_to_date(#{query.chcCreateDate}, '%Y-%m-%d') ]]>
+		</if>
+		<if test="query.chcDueId != null">
+			and  chc_due_id = #{query.chcDueId}
+		</if>
+		<if test="query.chcDueTo != null and query.chcDueTo!=''">
+			and  chc_due_to = #{query.chcDueTo}
+		</if>
+		<if test="query.chcDueDate != null and query.chcDueDate!=''">
+			<![CDATA[ and  chc_due_date=str_to_date(#{query.chcDueDate}, '%Y-%m-%d') ]]>
+		</if>
+		<if test="query.chcStatus != null and query.chcStatus2 == null and query.chcStatus3 == null and query.chcStatus4 == null">
+			and  chc_status = #{query.chcStatus}
+		</if>
+		<if test="query.chcStatus2 != null and query.chcStatus == null and query.chcStatus3 == null and query.chcStatus4 == null">
+			and  chc_status = #{query.chcStatus2}
+		</if>
+		<if test="query.chcStatus3 != null and query.chcStatus2 == null and query.chcStatus == null and query.chcStatus4 == null">
+			and  chc_status = #{query.chcStatus3}
+		</if>
+		<if test="query.chcStatus4 != null and query.chcStatus2 == null and query.chcStatus == null and query.chcStatus3 == null">
+			and  chc_status = #{query.chcStatus4}
+		</if>
+	</sql>
+
+
+
+
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.chcSourceFuzzy!= null  and query.chcSourceFuzzy!=''">
+				 and  chc_source like concat('%', #{query.chcSourceFuzzy}, '%')
+			</if>
+			<if test="query.chcCustNameFuzzy!= null  and query.chcCustNameFuzzy!=''">
+				 and  chc_cust_name like concat('%', #{query.chcCustNameFuzzy}, '%')
+			</if>
+			<if test="query.chcTitleFuzzy!= null  and query.chcTitleFuzzy!=''">
+				 and  chc_title like concat('%', #{query.chcTitleFuzzy}, '%')
+			</if>
+			<if test="query.chcLinkmanFuzzy!= null  and query.chcLinkmanFuzzy!=''">
+				 and  chc_linkman like concat('%', #{query.chcLinkmanFuzzy}, '%')
+			</if>
+			<if test="query.chcTelFuzzy!= null  and query.chcTelFuzzy!=''">
+				 and  chc_tel like concat('%', #{query.chcTelFuzzy}, '%')
+			</if>
+			<if test="query.chcDescFuzzy!= null  and query.chcDescFuzzy!=''">
+				 and  chc_desc like concat('%', #{query.chcDescFuzzy}, '%')
+			</if>
+			<if test="query.chcCreateByFuzzy!= null  and query.chcCreateByFuzzy!=''">
+				 and  chc_create_by like concat('%', #{query.chcCreateByFuzzy}, '%')
+			</if>
+			<if test="query.chcCreateDateStart!= null and query.chcCreateDateStart!=''">
+				 <![CDATA[ and  chc_create_date>=str_to_date(#{query.chcCreateDateStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.chcCreateDateEnd!= null and query.chcCreateDateEnd!=''">
+				 <![CDATA[ and  chc_create_date< date_sub(str_to_date(#{query.chcCreateDateEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="query.chcDueToFuzzy!= null  and query.chcDueToFuzzy!=''">
+				 and  chc_due_to like concat('%', #{query.chcDueToFuzzy}, '%')
+			</if>
+			<if test="query.chcDueDateStart!= null and query.chcDueDateStart!=''">
+				 <![CDATA[ and  chc_due_date>=str_to_date(#{query.chcDueDateStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.chcDueDateEnd!= null and query.chcDueDateEnd!=''">
+				 <![CDATA[ and  chc_due_date< date_sub(str_to_date(#{query.chcDueDateEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+	 </where>
+	</sql>
+
+
+
+	<sql id="query_condition2">
+		<where>
+			<include refid="base_condition_filed2" />
+			<if test="query.chcSourceFuzzy!= null  and query.chcSourceFuzzy!=''">
+				and  chc_source like concat('%', #{query.chcSourceFuzzy}, '%')
+			</if>
+			<if test="query.chcCustNameFuzzy!= null  and query.chcCustNameFuzzy!=''">
+				and  chc_cust_name like concat('%', #{query.chcCustNameFuzzy}, '%')
+			</if>
+			<if test="query.chcTitleFuzzy!= null  and query.chcTitleFuzzy!=''">
+				and  chc_title like concat('%', #{query.chcTitleFuzzy}, '%')
+			</if>
+			<if test="query.chcLinkmanFuzzy!= null  and query.chcLinkmanFuzzy!=''">
+				and  chc_linkman like concat('%', #{query.chcLinkmanFuzzy}, '%')
+			</if>
+			<if test="query.chcTelFuzzy!= null  and query.chcTelFuzzy!=''">
+				and  chc_tel like concat('%', #{query.chcTelFuzzy}, '%')
+			</if>
+			<if test="query.chcDescFuzzy!= null  and query.chcDescFuzzy!=''">
+				and  chc_desc like concat('%', #{query.chcDescFuzzy}, '%')
+			</if>
+			<if test="query.chcCreateByFuzzy!= null  and query.chcCreateByFuzzy!=''">
+				and  chc_create_by like concat('%', #{query.chcCreateByFuzzy}, '%')
+			</if>
+			<if test="query.chcCreateDateStart!= null and query.chcCreateDateStart!=''">
+				<![CDATA[ and  chc_create_date>=str_to_date(#{query.chcCreateDateStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.chcCreateDateEnd!= null and query.chcCreateDateEnd!=''">
+				<![CDATA[ and  chc_create_date< date_sub(str_to_date(#{query.chcCreateDateEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="query.chcDueToFuzzy!= null  and query.chcDueToFuzzy!=''">
+				and  chc_due_to like concat('%', #{query.chcDueToFuzzy}, '%')
+			</if>
+			<if test="query.chcDueDateStart!= null and query.chcDueDateStart!=''">
+				<![CDATA[ and  chc_due_date>=str_to_date(#{query.chcDueDateStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.chcDueDateEnd!= null and query.chcDueDateEnd!=''">
+				<![CDATA[ and  chc_due_date< date_sub(str_to_date(#{query.chcDueDateEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+		</where>
+	</sql>
+
+
+	<sql id="query_condition3">
+		<where>
+			<include refid="base_condition_filed3" />
+			<if test="query.chcSourceFuzzy!= null  and query.chcSourceFuzzy!=''">
+				and  chc_source like concat('%', #{query.chcSourceFuzzy}, '%')
+			</if>
+			<if test="query.chcCustNameFuzzy!= null  and query.chcCustNameFuzzy!=''">
+				and  chc_cust_name like concat('%', #{query.chcCustNameFuzzy}, '%')
+			</if>
+			<if test="query.chcTitleFuzzy!= null  and query.chcTitleFuzzy!=''">
+				and  chc_title like concat('%', #{query.chcTitleFuzzy}, '%')
+			</if>
+			<if test="query.chcLinkmanFuzzy!= null  and query.chcLinkmanFuzzy!=''">
+				and  chc_linkman like concat('%', #{query.chcLinkmanFuzzy}, '%')
+			</if>
+			<if test="query.chcTelFuzzy!= null  and query.chcTelFuzzy!=''">
+				and  chc_tel like concat('%', #{query.chcTelFuzzy}, '%')
+			</if>
+			<if test="query.chcDescFuzzy!= null  and query.chcDescFuzzy!=''">
+				and  chc_desc like concat('%', #{query.chcDescFuzzy}, '%')
+			</if>
+			<if test="query.chcCreateByFuzzy!= null  and query.chcCreateByFuzzy!=''">
+				and  chc_create_by like concat('%', #{query.chcCreateByFuzzy}, '%')
+			</if>
+			<if test="query.chcCreateDateStart!= null and query.chcCreateDateStart!=''">
+				<![CDATA[ and  chc_create_date>=str_to_date(#{query.chcCreateDateStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.chcCreateDateEnd!= null and query.chcCreateDateEnd!=''">
+				<![CDATA[ and  chc_create_date< date_sub(str_to_date(#{query.chcCreateDateEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="query.chcDueToFuzzy!= null  and query.chcDueToFuzzy!=''">
+				and  chc_due_to like concat('%', #{query.chcDueToFuzzy}, '%')
+			</if>
+			<if test="query.chcDueDateStart!= null and query.chcDueDateStart!=''">
+				<![CDATA[ and  chc_due_date>=str_to_date(#{query.chcDueDateStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.chcDueDateEnd!= null and query.chcDueDateEnd!=''">
+				<![CDATA[ and  chc_due_date< date_sub(str_to_date(#{query.chcDueDateEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+		</where>
+	</sql>
+
+
+	<select id="selectList3" resultMap="base_result_map" >
+		SELECT <include refid="base_column_list" /> FROM sal_chance <include refid="query_condition3" />
+		<if test="query.orderBy!=null">
+			order by ${query.orderBy}
+		</if>
+		<if test="query.simplePage!=null">
+			limit #{query.simplePage.start},#{query.simplePage.end}
+		</if>
+	</select>
+
+
+
+	<select id="selectList2" resultMap="base_result_map" >
+		SELECT <include refid="base_column_list" /> FROM sal_chance <include refid="query_condition2" />
+		<if test="query.orderBy!=null">
+			order by ${query.orderBy}
+		</if>
+		<if test="query.simplePage!=null">
+			limit #{query.simplePage.start},#{query.simplePage.end}
+		</if>
+	</select>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM sal_chance <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM sal_chance <include refid="query_condition" />
+	</select>
+
+	<select id="selectCount2" resultType="java.lang.Integer" >
+		SELECT count(1) FROM sal_chance <include refid="query_condition2" />
+	</select>
+
+	<select id="selectCount3" resultType="java.lang.Integer" >
+		SELECT count(1) FROM sal_chance <include refid="query_condition3" />
+	</select>
+
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.SalChance">
+		<selectKey keyProperty="bean.chcId" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO sal_chance
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.chcSource != null">
+				 chc_source,
+			</if>
+			<if test="bean.chcCustName != null">
+				 chc_cust_name,
+			</if>
+			<if test="bean.chcTitle != null">
+				 chc_title,
+			</if>
+			<if test="bean.chcRate != null">
+				 chc_rate,
+			</if>
+			<if test="bean.chcLinkman != null">
+				 chc_linkman,
+			</if>
+			<if test="bean.chcTel != null">
+				 chc_tel,
+			</if>
+			<if test="bean.chcDesc != null">
+				 chc_desc,
+			</if>
+			<if test="bean.chcCreateId != null">
+				 chc_create_id,
+			</if>
+			<if test="bean.chcCreateBy != null">
+				 chc_create_by,
+			</if>
+			<if test="bean.chcCreateDate != null">
+				 chc_create_date,
+			</if>
+			<if test="bean.chcDueId != null">
+				 chc_due_id,
+			</if>
+			<if test="bean.chcDueTo != null">
+				 chc_due_to,
+			</if>
+			<if test="bean.chcDueDate != null">
+				 chc_due_date,
+			</if>
+			<if test="bean.chcStatus != null">
+				 chc_status,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.chcSource!=null">
+				 #{bean.chcSource},
+			</if>
+			<if test="bean.chcCustName!=null">
+				 #{bean.chcCustName},
+			</if>
+			<if test="bean.chcTitle!=null">
+				 #{bean.chcTitle},
+			</if>
+			<if test="bean.chcRate!=null">
+				 #{bean.chcRate},
+			</if>
+			<if test="bean.chcLinkman!=null">
+				 #{bean.chcLinkman},
+			</if>
+			<if test="bean.chcTel!=null">
+				 #{bean.chcTel},
+			</if>
+			<if test="bean.chcDesc!=null">
+				 #{bean.chcDesc},
+			</if>
+			<if test="bean.chcCreateId!=null">
+				 #{bean.chcCreateId},
+			</if>
+			<if test="bean.chcCreateBy!=null">
+				 #{bean.chcCreateBy},
+			</if>
+			<if test="bean.chcCreateDate!=null">
+				 #{bean.chcCreateDate},
+			</if>
+			<if test="bean.chcDueId!=null">
+				 #{bean.chcDueId},
+			</if>
+			<if test="bean.chcDueTo!=null">
+				 #{bean.chcDueTo},
+			</if>
+			<if test="bean.chcDueDate!=null">
+				 #{bean.chcDueDate},
+			</if>
+			<if test="bean.chcStatus!=null">
+				 #{bean.chcStatus},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.SalChance">
+		 INSERT INTO sal_chance
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.chcId != null">
+				 chc_id,
+			</if>
+			<if test="bean.chcSource != null">
+				 chc_source,
+			</if>
+			<if test="bean.chcCustName != null">
+				 chc_cust_name,
+			</if>
+			<if test="bean.chcTitle != null">
+				 chc_title,
+			</if>
+			<if test="bean.chcRate != null">
+				 chc_rate,
+			</if>
+			<if test="bean.chcLinkman != null">
+				 chc_linkman,
+			</if>
+			<if test="bean.chcTel != null">
+				 chc_tel,
+			</if>
+			<if test="bean.chcDesc != null">
+				 chc_desc,
+			</if>
+			<if test="bean.chcCreateId != null">
+				 chc_create_id,
+			</if>
+			<if test="bean.chcCreateBy != null">
+				 chc_create_by,
+			</if>
+			<if test="bean.chcCreateDate != null">
+				 chc_create_date,
+			</if>
+			<if test="bean.chcDueId != null">
+				 chc_due_id,
+			</if>
+			<if test="bean.chcDueTo != null">
+				 chc_due_to,
+			</if>
+			<if test="bean.chcDueDate != null">
+				 chc_due_date,
+			</if>
+			<if test="bean.chcStatus != null">
+				 chc_status,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.chcId!=null">
+				 #{bean.chcId},
+			</if>
+			<if test="bean.chcSource!=null">
+				 #{bean.chcSource},
+			</if>
+			<if test="bean.chcCustName!=null">
+				 #{bean.chcCustName},
+			</if>
+			<if test="bean.chcTitle!=null">
+				 #{bean.chcTitle},
+			</if>
+			<if test="bean.chcRate!=null">
+				 #{bean.chcRate},
+			</if>
+			<if test="bean.chcLinkman!=null">
+				 #{bean.chcLinkman},
+			</if>
+			<if test="bean.chcTel!=null">
+				 #{bean.chcTel},
+			</if>
+			<if test="bean.chcDesc!=null">
+				 #{bean.chcDesc},
+			</if>
+			<if test="bean.chcCreateId!=null">
+				 #{bean.chcCreateId},
+			</if>
+			<if test="bean.chcCreateBy!=null">
+				 #{bean.chcCreateBy},
+			</if>
+			<if test="bean.chcCreateDate!=null">
+				 #{bean.chcCreateDate},
+			</if>
+			<if test="bean.chcDueId!=null">
+				 #{bean.chcDueId},
+			</if>
+			<if test="bean.chcDueTo!=null">
+				 #{bean.chcDueTo},
+			</if>
+			<if test="bean.chcDueDate!=null">
+				 #{bean.chcDueDate},
+			</if>
+			<if test="bean.chcStatus!=null">
+				 #{bean.chcStatus},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.chcSource!=null">
+				 chc_source = VALUES(chc_source),
+			</if>
+			<if test="bean.chcCustName!=null">
+				 chc_cust_name = VALUES(chc_cust_name),
+			</if>
+			<if test="bean.chcTitle!=null">
+				 chc_title = VALUES(chc_title),
+			</if>
+			<if test="bean.chcRate!=null">
+				 chc_rate = VALUES(chc_rate),
+			</if>
+			<if test="bean.chcLinkman!=null">
+				 chc_linkman = VALUES(chc_linkman),
+			</if>
+			<if test="bean.chcTel!=null">
+				 chc_tel = VALUES(chc_tel),
+			</if>
+			<if test="bean.chcDesc!=null">
+				 chc_desc = VALUES(chc_desc),
+			</if>
+			<if test="bean.chcCreateId!=null">
+				 chc_create_id = VALUES(chc_create_id),
+			</if>
+			<if test="bean.chcCreateBy!=null">
+				 chc_create_by = VALUES(chc_create_by),
+			</if>
+			<if test="bean.chcCreateDate!=null">
+				 chc_create_date = VALUES(chc_create_date),
+			</if>
+			<if test="bean.chcDueId!=null">
+				 chc_due_id = VALUES(chc_due_id),
+			</if>
+			<if test="bean.chcDueTo!=null">
+				 chc_due_to = VALUES(chc_due_to),
+			</if>
+			<if test="bean.chcDueDate!=null">
+				 chc_due_date = VALUES(chc_due_date),
+			</if>
+			<if test="bean.chcStatus!=null">
+				 chc_status = VALUES(chc_status),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.SalChance" useGeneratedKeys="true" keyProperty="chcId">
+		 INSERT INTO sal_chance(
+			 chc_source,
+			 chc_cust_name,
+			 chc_title,
+			 chc_rate,
+			 chc_linkman,
+			 chc_tel,
+			 chc_desc,
+			 chc_create_id,
+			 chc_create_by,
+			 chc_create_date,
+			 chc_due_id,
+			 chc_due_to,
+			 chc_due_date,
+			 chc_status
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.chcSource},
+				 #{item.chcCustName},
+				 #{item.chcTitle},
+				 #{item.chcRate},
+				 #{item.chcLinkman},
+				 #{item.chcTel},
+				 #{item.chcDesc},
+				 #{item.chcCreateId},
+				 #{item.chcCreateBy},
+				 #{item.chcCreateDate},
+				 #{item.chcDueId},
+				 #{item.chcDueTo},
+				 #{item.chcDueDate},
+				 #{item.chcStatus}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.SalChance">
+		 INSERT INTO sal_chance(
+			 chc_source,
+			 chc_cust_name,
+			 chc_title,
+			 chc_rate,
+			 chc_linkman,
+			 chc_tel,
+			 chc_desc,
+			 chc_create_id,
+			 chc_create_by,
+			 chc_create_date,
+			 chc_due_id,
+			 chc_due_to,
+			 chc_due_date,
+			 chc_status
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.chcSource},
+				 #{item.chcCustName},
+				 #{item.chcTitle},
+				 #{item.chcRate},
+				 #{item.chcLinkman},
+				 #{item.chcTel},
+				 #{item.chcDesc},
+				 #{item.chcCreateId},
+				 #{item.chcCreateBy},
+				 #{item.chcCreateDate},
+				 #{item.chcDueId},
+				 #{item.chcDueTo},
+				 #{item.chcDueDate},
+				 #{item.chcStatus}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			chc_source = VALUES(chc_source),
+			chc_cust_name = VALUES(chc_cust_name),
+			chc_title = VALUES(chc_title),
+			chc_rate = VALUES(chc_rate),
+			chc_linkman = VALUES(chc_linkman),
+			chc_tel = VALUES(chc_tel),
+			chc_desc = VALUES(chc_desc),
+			chc_create_id = VALUES(chc_create_id),
+			chc_create_by = VALUES(chc_create_by),
+			chc_create_date = VALUES(chc_create_date),
+			chc_due_id = VALUES(chc_due_id),
+			chc_due_to = VALUES(chc_due_to),
+			chc_due_date = VALUES(chc_due_date),
+			chc_status = VALUES(chc_status)
+	</insert>
+
+	<!-- 根据ChcId修改-->
+	<update id="updateByChcId" parameterType="com.hmk.crmdoem.entity.po.SalChance">
+		 UPDATE sal_chance
+ 		 <set> 
+			<if test="bean.chcSource != null">
+				 chc_source = #{bean.chcSource},
+			</if>
+			<if test="bean.chcCustName != null">
+				 chc_cust_name = #{bean.chcCustName},
+			</if>
+			<if test="bean.chcTitle != null">
+				 chc_title = #{bean.chcTitle},
+			</if>
+			<if test="bean.chcRate != null">
+				 chc_rate = #{bean.chcRate},
+			</if>
+			<if test="bean.chcLinkman != null">
+				 chc_linkman = #{bean.chcLinkman},
+			</if>
+			<if test="bean.chcTel != null">
+				 chc_tel = #{bean.chcTel},
+			</if>
+			<if test="bean.chcDesc != null">
+				 chc_desc = #{bean.chcDesc},
+			</if>
+			<if test="bean.chcCreateId != null">
+				 chc_create_id = #{bean.chcCreateId},
+			</if>
+			<if test="bean.chcCreateBy != null">
+				 chc_create_by = #{bean.chcCreateBy},
+			</if>
+			<if test="bean.chcCreateDate != null">
+				 chc_create_date = #{bean.chcCreateDate},
+			</if>
+			<if test="bean.chcDueId != null">
+				 chc_due_id = #{bean.chcDueId},
+			</if>
+			<if test="bean.chcDueTo != null">
+				 chc_due_to = #{bean.chcDueTo},
+			</if>
+			<if test="bean.chcDueDate != null">
+				 chc_due_date = #{bean.chcDueDate},
+			</if>
+			<if test="bean.chcStatus != null">
+				 chc_status = #{bean.chcStatus},
+			</if>
+ 		 </set>
+ 		 where chc_id=#{chcId}
+	</update>
+
+	<!-- 根据ChcId删除-->
+	<delete id="deleteByChcId">
+		delete from sal_chance where chc_id=#{chcId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByChcId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from sal_chance where chc_id=#{chcId}
+	</select>
+
+</mapper>

@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.OrdersMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.Orders">
+		<!---->
+		<result column="odr_id" property="odrId"  />
+		<!---->
+		<result column="odr_customer" property="odrCustomer"  />
+		<!---->
+		<result column="odr_date" property="odrDate"  />
+		<!---->
+		<result column="odr_addr" property="odrAddr"  />
+		<!---->
+		<result column="odr_status" property="odrStatus"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 odr_id,odr_customer,odr_date,odr_addr,odr_status
+		 
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.odrId != null">
+				 and  odr_id = #{query.odrId}
+			</if>
+			<if test="query.odrCustomer != null and query.odrCustomer!=''">
+				 and  odr_customer = #{query.odrCustomer}
+			</if>
+			<if test="query.odrDate != null and query.odrDate!=''">
+				 <![CDATA[ and  odr_date=str_to_date(#{query.odrDate}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.odrAddr != null and query.odrAddr!=''">
+				 and  odr_addr = #{query.odrAddr}
+			</if>
+			<if test="query.odrStatus != null and query.odrStatus!=''">
+				 and  odr_status = #{query.odrStatus}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.odrCustomerFuzzy!= null  and query.odrCustomerFuzzy!=''">
+				 and  odr_customer like concat('%', #{query.odrCustomerFuzzy}, '%')
+			</if>
+			<if test="query.odrDateStart!= null and query.odrDateStart!=''">
+				 <![CDATA[ and  odr_date>=str_to_date(#{query.odrDateStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.odrDateEnd!= null and query.odrDateEnd!=''">
+				 <![CDATA[ and  odr_date< date_sub(str_to_date(#{query.odrDateEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="query.odrAddrFuzzy!= null  and query.odrAddrFuzzy!=''">
+				 and  odr_addr like concat('%', #{query.odrAddrFuzzy}, '%')
+			</if>
+			<if test="query.odrStatusFuzzy!= null  and query.odrStatusFuzzy!=''">
+				 and  odr_status like concat('%', #{query.odrStatusFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM orders <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM orders <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.Orders">
+		 INSERT INTO orders
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.odrId != null">
+				 odr_id,
+			</if>
+			<if test="bean.odrCustomer != null">
+				 odr_customer,
+			</if>
+			<if test="bean.odrDate != null">
+				 odr_date,
+			</if>
+			<if test="bean.odrAddr != null">
+				 odr_addr,
+			</if>
+			<if test="bean.odrStatus != null">
+				 odr_status,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.odrId!=null">
+				 #{bean.odrId},
+			</if>
+			<if test="bean.odrCustomer!=null">
+				 #{bean.odrCustomer},
+			</if>
+			<if test="bean.odrDate!=null">
+				 #{bean.odrDate},
+			</if>
+			<if test="bean.odrAddr!=null">
+				 #{bean.odrAddr},
+			</if>
+			<if test="bean.odrStatus!=null">
+				 #{bean.odrStatus},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.Orders">
+		 INSERT INTO orders
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.odrId != null">
+				 odr_id,
+			</if>
+			<if test="bean.odrCustomer != null">
+				 odr_customer,
+			</if>
+			<if test="bean.odrDate != null">
+				 odr_date,
+			</if>
+			<if test="bean.odrAddr != null">
+				 odr_addr,
+			</if>
+			<if test="bean.odrStatus != null">
+				 odr_status,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.odrId!=null">
+				 #{bean.odrId},
+			</if>
+			<if test="bean.odrCustomer!=null">
+				 #{bean.odrCustomer},
+			</if>
+			<if test="bean.odrDate!=null">
+				 #{bean.odrDate},
+			</if>
+			<if test="bean.odrAddr!=null">
+				 #{bean.odrAddr},
+			</if>
+			<if test="bean.odrStatus!=null">
+				 #{bean.odrStatus},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.odrId!=null">
+				 odr_id = VALUES(odr_id),
+			</if>
+			<if test="bean.odrCustomer!=null">
+				 odr_customer = VALUES(odr_customer),
+			</if>
+			<if test="bean.odrDate!=null">
+				 odr_date = VALUES(odr_date),
+			</if>
+			<if test="bean.odrAddr!=null">
+				 odr_addr = VALUES(odr_addr),
+			</if>
+			<if test="bean.odrStatus!=null">
+				 odr_status = VALUES(odr_status),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.Orders">
+		 INSERT INTO orders(
+			 odr_id,
+			 odr_customer,
+			 odr_date,
+			 odr_addr,
+			 odr_status
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.odrId},
+				 #{item.odrCustomer},
+				 #{item.odrDate},
+				 #{item.odrAddr},
+				 #{item.odrStatus}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.Orders">
+		 INSERT INTO orders(
+			 odr_id,
+			 odr_customer,
+			 odr_date,
+			 odr_addr,
+			 odr_status
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.odrId},
+				 #{item.odrCustomer},
+				 #{item.odrDate},
+				 #{item.odrAddr},
+				 #{item.odrStatus}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			odr_id = VALUES(odr_id),
+			odr_customer = VALUES(odr_customer),
+			odr_date = VALUES(odr_date),
+			odr_addr = VALUES(odr_addr),
+			odr_status = VALUES(odr_status)
+	</insert>
+
+	<!-- 根据OdrId修改-->
+	<update id="updateByOdrId" parameterType="com.hmk.crmdoem.entity.po.Orders">
+		 UPDATE orders
+ 		 <set> 
+			<if test="bean.odrCustomer != null">
+				 odr_customer = #{bean.odrCustomer},
+			</if>
+			<if test="bean.odrDate != null">
+				 odr_date = #{bean.odrDate},
+			</if>
+			<if test="bean.odrAddr != null">
+				 odr_addr = #{bean.odrAddr},
+			</if>
+			<if test="bean.odrStatus != null">
+				 odr_status = #{bean.odrStatus},
+			</if>
+ 		 </set>
+ 		 where odr_id=#{odrId}
+	</update>
+
+	<!-- 根据OdrId删除-->
+	<delete id="deleteByOdrId">
+		delete from orders where odr_id=#{odrId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByOdrId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from orders where odr_id=#{odrId}
+	</select>
+
+</mapper>

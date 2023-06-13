@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.ContributeMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.Contribute">
+		<!---->
+		<id column="id" property="id"  />
+		<!---->
+		<result column="name" property="name"  />
+		<!---->
+		<result column="total_price" property="totalPrice"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 id,name,total_price
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.id != null">
+				 and  id = #{query.id}
+			</if>
+			<if test="query.name != null and query.name!=''">
+				 and  name = #{query.name}
+			</if>
+			<if test="query.totalPrice != null">
+				 and  total_price = #{query.totalPrice}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.nameFuzzy!= null  and query.nameFuzzy!=''">
+				 and  name like concat('%', #{query.nameFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM contribute <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM contribute <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.Contribute">
+		<selectKey keyProperty="bean.id" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO contribute
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.name != null">
+				 name,
+			</if>
+			<if test="bean.totalPrice != null">
+				 total_price,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.name!=null">
+				 #{bean.name},
+			</if>
+			<if test="bean.totalPrice!=null">
+				 #{bean.totalPrice},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.Contribute">
+		 INSERT INTO contribute
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.id != null">
+				 id,
+			</if>
+			<if test="bean.name != null">
+				 name,
+			</if>
+			<if test="bean.totalPrice != null">
+				 total_price,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.id!=null">
+				 #{bean.id},
+			</if>
+			<if test="bean.name!=null">
+				 #{bean.name},
+			</if>
+			<if test="bean.totalPrice!=null">
+				 #{bean.totalPrice},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.name!=null">
+				 name = VALUES(name),
+			</if>
+			<if test="bean.totalPrice!=null">
+				 total_price = VALUES(total_price),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.Contribute" useGeneratedKeys="true" keyProperty="id">
+		 INSERT INTO contribute(
+			 name,
+			 total_price
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.name},
+				 #{item.totalPrice}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.Contribute">
+		 INSERT INTO contribute(
+			 name,
+			 total_price
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.name},
+				 #{item.totalPrice}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			name = VALUES(name),
+			total_price = VALUES(total_price)
+	</insert>
+
+	<!-- 根据Id修改-->
+	<update id="updateById" parameterType="com.hmk.crmdoem.entity.po.Contribute">
+		 UPDATE contribute
+ 		 <set> 
+			<if test="bean.name != null">
+				 name = #{bean.name},
+			</if>
+			<if test="bean.totalPrice != null">
+				 total_price = #{bean.totalPrice},
+			</if>
+ 		 </set>
+ 		 where id=#{id}
+	</update>
+
+	<!-- 根据Id删除-->
+	<delete id="deleteById">
+		delete from contribute where id=#{id}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectById" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from contribute where id=#{id}
+	</select>
+
+</mapper>

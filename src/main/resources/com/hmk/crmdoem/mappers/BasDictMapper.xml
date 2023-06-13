@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.BasDictMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.BasDict">
+		<!---->
+		<id column="dict_id" property="dictId"  />
+		<!---->
+		<result column="dict_type" property="dictType"  />
+		<!---->
+		<result column="dict_item" property="dictItem"  />
+		<!---->
+		<result column="dict_value" property="dictValue"  />
+		<!---->
+		<result column="dict_is_editable" property="dictIsEditable"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 dict_id,dict_type,dict_item,dict_value,dict_is_editable
+		 
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.dictId != null">
+				 and  dict_id = #{query.dictId}
+			</if>
+			<if test="query.dictType != null and query.dictType!=''">
+				 and  dict_type = #{query.dictType}
+			</if>
+			<if test="query.dictItem != null and query.dictItem!=''">
+				 and  dict_item = #{query.dictItem}
+			</if>
+			<if test="query.dictValue != null and query.dictValue!=''">
+				 and  dict_value = #{query.dictValue}
+			</if>
+			<if test="query.dictIsEditable != null and query.dictIsEditable!=''">
+				 and  dict_is_editable = #{query.dictIsEditable}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.dictTypeFuzzy!= null  and query.dictTypeFuzzy!=''">
+				 and  dict_type like concat('%', #{query.dictTypeFuzzy}, '%')
+			</if>
+			<if test="query.dictItemFuzzy!= null  and query.dictItemFuzzy!=''">
+				 and  dict_item like concat('%', #{query.dictItemFuzzy}, '%')
+			</if>
+			<if test="query.dictValueFuzzy!= null  and query.dictValueFuzzy!=''">
+				 and  dict_value like concat('%', #{query.dictValueFuzzy}, '%')
+			</if>
+			<if test="query.dictIsEditableFuzzy!= null  and query.dictIsEditableFuzzy!=''">
+				 and  dict_is_editable like concat('%', #{query.dictIsEditableFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM bas_dict <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM bas_dict <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.BasDict">
+		<selectKey keyProperty="bean.dictId" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO bas_dict
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.dictType != null">
+				 dict_type,
+			</if>
+			<if test="bean.dictItem != null">
+				 dict_item,
+			</if>
+			<if test="bean.dictValue != null">
+				 dict_value,
+			</if>
+			<if test="bean.dictIsEditable != null">
+				 dict_is_editable,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.dictType!=null">
+				 #{bean.dictType},
+			</if>
+			<if test="bean.dictItem!=null">
+				 #{bean.dictItem},
+			</if>
+			<if test="bean.dictValue!=null">
+				 #{bean.dictValue},
+			</if>
+			<if test="bean.dictIsEditable!=null">
+				 #{bean.dictIsEditable},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.BasDict">
+		 INSERT INTO bas_dict
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.dictId != null">
+				 dict_id,
+			</if>
+			<if test="bean.dictType != null">
+				 dict_type,
+			</if>
+			<if test="bean.dictItem != null">
+				 dict_item,
+			</if>
+			<if test="bean.dictValue != null">
+				 dict_value,
+			</if>
+			<if test="bean.dictIsEditable != null">
+				 dict_is_editable,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.dictId!=null">
+				 #{bean.dictId},
+			</if>
+			<if test="bean.dictType!=null">
+				 #{bean.dictType},
+			</if>
+			<if test="bean.dictItem!=null">
+				 #{bean.dictItem},
+			</if>
+			<if test="bean.dictValue!=null">
+				 #{bean.dictValue},
+			</if>
+			<if test="bean.dictIsEditable!=null">
+				 #{bean.dictIsEditable},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.dictType!=null">
+				 dict_type = VALUES(dict_type),
+			</if>
+			<if test="bean.dictItem!=null">
+				 dict_item = VALUES(dict_item),
+			</if>
+			<if test="bean.dictValue!=null">
+				 dict_value = VALUES(dict_value),
+			</if>
+			<if test="bean.dictIsEditable!=null">
+				 dict_is_editable = VALUES(dict_is_editable),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.BasDict" useGeneratedKeys="true" keyProperty="dictId">
+		 INSERT INTO bas_dict(
+			 dict_type,
+			 dict_item,
+			 dict_value,
+			 dict_is_editable
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.dictType},
+				 #{item.dictItem},
+				 #{item.dictValue},
+				 #{item.dictIsEditable}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.BasDict">
+		 INSERT INTO bas_dict(
+			 dict_type,
+			 dict_item,
+			 dict_value,
+			 dict_is_editable
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.dictType},
+				 #{item.dictItem},
+				 #{item.dictValue},
+				 #{item.dictIsEditable}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			dict_type = VALUES(dict_type),
+			dict_item = VALUES(dict_item),
+			dict_value = VALUES(dict_value),
+			dict_is_editable = VALUES(dict_is_editable)
+	</insert>
+
+	<!-- 根据DictId修改-->
+	<update id="updateByDictId" parameterType="com.hmk.crmdoem.entity.po.BasDict">
+		 UPDATE bas_dict
+ 		 <set> 
+			<if test="bean.dictType != null">
+				 dict_type = #{bean.dictType},
+			</if>
+			<if test="bean.dictItem != null">
+				 dict_item = #{bean.dictItem},
+			</if>
+			<if test="bean.dictValue != null">
+				 dict_value = #{bean.dictValue},
+			</if>
+			<if test="bean.dictIsEditable != null">
+				 dict_is_editable = #{bean.dictIsEditable},
+			</if>
+ 		 </set>
+ 		 where dict_id=#{dictId}
+	</update>
+
+	<!-- 根据DictId删除-->
+	<delete id="deleteByDictId">
+		delete from bas_dict where dict_id=#{dictId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByDictId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from bas_dict where dict_id=#{dictId}
+	</select>
+
+</mapper>

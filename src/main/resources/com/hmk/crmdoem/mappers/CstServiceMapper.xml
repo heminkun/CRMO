@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.CstServiceMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.CstService">
+		<!---->
+		<id column="svr_id" property="svrId"  />
+		<!---->
+		<result column="svr_type" property="svrType"  />
+		<!---->
+		<result column="svr_title" property="svrTitle"  />
+		<!---->
+		<result column="svr_cust_no" property="svrCustNo"  />
+		<!---->
+		<result column="svr_cust_name" property="svrCustName"  />
+		<!---->
+		<result column="svr_status" property="svrStatus"  />
+		<!---->
+		<result column="svr_request" property="svrRequest"  />
+		<!---->
+		<result column="svr_create_id" property="svrCreateId"  />
+		<!---->
+		<result column="svr_create_by" property="svrCreateBy"  />
+		<!---->
+		<result column="svr_create_date" property="svrCreateDate"  />
+		<!---->
+		<result column="svr_due_id" property="svrDueId"  />
+		<!---->
+		<result column="svr_due_to" property="svrDueTo"  />
+		<!---->
+		<result column="svr_due_date" property="svrDueDate"  />
+		<!---->
+		<result column="svr_deal" property="svrDeal"  />
+		<!---->
+		<result column="svr_deal_id" property="svrDealId"  />
+		<!---->
+		<result column="svr_deal_by" property="svrDealBy"  />
+		<!---->
+		<result column="svr_deal_date" property="svrDealDate"  />
+		<!---->
+		<result column="svr_result" property="svrResult"  />
+		<!---->
+		<result column="svr_satisfy" property="svrSatisfy"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 svr_id,svr_type,svr_title,svr_cust_no,svr_cust_name,
+		 svr_status,svr_request,svr_create_id,svr_create_by,svr_create_date,
+		 svr_due_id,svr_due_to,svr_due_date,svr_deal,svr_deal_id,
+		 svr_deal_by,svr_deal_date,svr_result,svr_satisfy
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.svrId != null">
+				 and  svr_id = #{query.svrId}
+			</if>
+			<if test="query.svrType != null and query.svrType!=''">
+				 and  svr_type = #{query.svrType}
+			</if>
+			<if test="query.svrTitle != null and query.svrTitle!=''">
+				 and  svr_title = #{query.svrTitle}
+			</if>
+			<if test="query.svrCustNo != null and query.svrCustNo!=''">
+				 and  svr_cust_no = #{query.svrCustNo}
+			</if>
+			<if test="query.svrCustName != null and query.svrCustName!=''">
+				 and  svr_cust_name = #{query.svrCustName}
+			</if>
+			<if test="query.svrStatus != null and query.svrStatus!=''">
+				 and  svr_status = #{query.svrStatus}
+			</if>
+			<if test="query.svrRequest != null and query.svrRequest!=''">
+				 and  svr_request = #{query.svrRequest}
+			</if>
+			<if test="query.svrCreateId != null">
+				 and  svr_create_id = #{query.svrCreateId}
+			</if>
+			<if test="query.svrCreateBy != null and query.svrCreateBy!=''">
+				 and  svr_create_by = #{query.svrCreateBy}
+			</if>
+			<if test="query.svrCreateDate != null and query.svrCreateDate!=''">
+				 <![CDATA[ and  svr_create_date=str_to_date(#{query.svrCreateDate}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.svrDueId != null">
+				 and  svr_due_id = #{query.svrDueId}
+			</if>
+			<if test="query.svrDueTo != null and query.svrDueTo!=''">
+				 and  svr_due_to = #{query.svrDueTo}
+			</if>
+			<if test="query.svrDueDate != null and query.svrDueDate!=''">
+				 <![CDATA[ and  svr_due_date=str_to_date(#{query.svrDueDate}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.svrDeal != null and query.svrDeal!=''">
+				 and  svr_deal = #{query.svrDeal}
+			</if>
+			<if test="query.svrDealId != null">
+				 and  svr_deal_id = #{query.svrDealId}
+			</if>
+			<if test="query.svrDealBy != null and query.svrDealBy!=''">
+				 and  svr_deal_by = #{query.svrDealBy}
+			</if>
+			<if test="query.svrDealDate != null and query.svrDealDate!=''">
+				 <![CDATA[ and  svr_deal_date=str_to_date(#{query.svrDealDate}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.svrResult != null and query.svrResult!=''">
+				 and  svr_result = #{query.svrResult}
+			</if>
+			<if test="query.svrSatisfy != null">
+				 and  svr_satisfy = #{query.svrSatisfy}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.svrTypeFuzzy!= null  and query.svrTypeFuzzy!=''">
+				 and  svr_type like concat('%', #{query.svrTypeFuzzy}, '%')
+			</if>
+			<if test="query.svrTitleFuzzy!= null  and query.svrTitleFuzzy!=''">
+				 and  svr_title like concat('%', #{query.svrTitleFuzzy}, '%')
+			</if>
+			<if test="query.svrCustNoFuzzy!= null  and query.svrCustNoFuzzy!=''">
+				 and  svr_cust_no like concat('%', #{query.svrCustNoFuzzy}, '%')
+			</if>
+			<if test="query.svrCustNameFuzzy!= null  and query.svrCustNameFuzzy!=''">
+				 and  svr_cust_name like concat('%', #{query.svrCustNameFuzzy}, '%')
+			</if>
+			<if test="query.svrStatusFuzzy!= null  and query.svrStatusFuzzy!=''">
+				 and  svr_status like concat('%', #{query.svrStatusFuzzy}, '%')
+			</if>
+			<if test="query.svrRequestFuzzy!= null  and query.svrRequestFuzzy!=''">
+				 and  svr_request like concat('%', #{query.svrRequestFuzzy}, '%')
+			</if>
+			<if test="query.svrCreateByFuzzy!= null  and query.svrCreateByFuzzy!=''">
+				 and  svr_create_by like concat('%', #{query.svrCreateByFuzzy}, '%')
+			</if>
+			<if test="query.svrCreateDateStart!= null and query.svrCreateDateStart!=''">
+				 <![CDATA[ and  svr_create_date>=str_to_date(#{query.svrCreateDateStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.svrCreateDateEnd!= null and query.svrCreateDateEnd!=''">
+				 <![CDATA[ and  svr_create_date< date_sub(str_to_date(#{query.svrCreateDateEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="query.svrDueToFuzzy!= null  and query.svrDueToFuzzy!=''">
+				 and  svr_due_to like concat('%', #{query.svrDueToFuzzy}, '%')
+			</if>
+			<if test="query.svrDueDateStart!= null and query.svrDueDateStart!=''">
+				 <![CDATA[ and  svr_due_date>=str_to_date(#{query.svrDueDateStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.svrDueDateEnd!= null and query.svrDueDateEnd!=''">
+				 <![CDATA[ and  svr_due_date< date_sub(str_to_date(#{query.svrDueDateEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="query.svrDealFuzzy!= null  and query.svrDealFuzzy!=''">
+				 and  svr_deal like concat('%', #{query.svrDealFuzzy}, '%')
+			</if>
+			<if test="query.svrDealByFuzzy!= null  and query.svrDealByFuzzy!=''">
+				 and  svr_deal_by like concat('%', #{query.svrDealByFuzzy}, '%')
+			</if>
+			<if test="query.svrDealDateStart!= null and query.svrDealDateStart!=''">
+				 <![CDATA[ and  svr_deal_date>=str_to_date(#{query.svrDealDateStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.svrDealDateEnd!= null and query.svrDealDateEnd!=''">
+				 <![CDATA[ and  svr_deal_date< date_sub(str_to_date(#{query.svrDealDateEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="query.svrResultFuzzy!= null  and query.svrResultFuzzy!=''">
+				 and  svr_result like concat('%', #{query.svrResultFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM cst_service <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM cst_service <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.CstService">
+		<selectKey keyProperty="bean.svrId" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO cst_service
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.svrType != null">
+				 svr_type,
+			</if>
+			<if test="bean.svrTitle != null">
+				 svr_title,
+			</if>
+			<if test="bean.svrCustNo != null">
+				 svr_cust_no,
+			</if>
+			<if test="bean.svrCustName != null">
+				 svr_cust_name,
+			</if>
+			<if test="bean.svrStatus != null">
+				 svr_status,
+			</if>
+			<if test="bean.svrRequest != null">
+				 svr_request,
+			</if>
+			<if test="bean.svrCreateId != null">
+				 svr_create_id,
+			</if>
+			<if test="bean.svrCreateBy != null">
+				 svr_create_by,
+			</if>
+			<if test="bean.svrCreateDate != null">
+				 svr_create_date,
+			</if>
+			<if test="bean.svrDueId != null">
+				 svr_due_id,
+			</if>
+			<if test="bean.svrDueTo != null">
+				 svr_due_to,
+			</if>
+			<if test="bean.svrDueDate != null">
+				 svr_due_date,
+			</if>
+			<if test="bean.svrDeal != null">
+				 svr_deal,
+			</if>
+			<if test="bean.svrDealId != null">
+				 svr_deal_id,
+			</if>
+			<if test="bean.svrDealBy != null">
+				 svr_deal_by,
+			</if>
+			<if test="bean.svrDealDate != null">
+				 svr_deal_date,
+			</if>
+			<if test="bean.svrResult != null">
+				 svr_result,
+			</if>
+			<if test="bean.svrSatisfy != null">
+				 svr_satisfy,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.svrType!=null">
+				 #{bean.svrType},
+			</if>
+			<if test="bean.svrTitle!=null">
+				 #{bean.svrTitle},
+			</if>
+			<if test="bean.svrCustNo!=null">
+				 #{bean.svrCustNo},
+			</if>
+			<if test="bean.svrCustName!=null">
+				 #{bean.svrCustName},
+			</if>
+			<if test="bean.svrStatus!=null">
+				 #{bean.svrStatus},
+			</if>
+			<if test="bean.svrRequest!=null">
+				 #{bean.svrRequest},
+			</if>
+			<if test="bean.svrCreateId!=null">
+				 #{bean.svrCreateId},
+			</if>
+			<if test="bean.svrCreateBy!=null">
+				 #{bean.svrCreateBy},
+			</if>
+			<if test="bean.svrCreateDate!=null">
+				 #{bean.svrCreateDate},
+			</if>
+			<if test="bean.svrDueId!=null">
+				 #{bean.svrDueId},
+			</if>
+			<if test="bean.svrDueTo!=null">
+				 #{bean.svrDueTo},
+			</if>
+			<if test="bean.svrDueDate!=null">
+				 #{bean.svrDueDate},
+			</if>
+			<if test="bean.svrDeal!=null">
+				 #{bean.svrDeal},
+			</if>
+			<if test="bean.svrDealId!=null">
+				 #{bean.svrDealId},
+			</if>
+			<if test="bean.svrDealBy!=null">
+				 #{bean.svrDealBy},
+			</if>
+			<if test="bean.svrDealDate!=null">
+				 #{bean.svrDealDate},
+			</if>
+			<if test="bean.svrResult!=null">
+				 #{bean.svrResult},
+			</if>
+			<if test="bean.svrSatisfy!=null">
+				 #{bean.svrSatisfy},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.CstService">
+		 INSERT INTO cst_service
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.svrId != null">
+				 svr_id,
+			</if>
+			<if test="bean.svrType != null">
+				 svr_type,
+			</if>
+			<if test="bean.svrTitle != null">
+				 svr_title,
+			</if>
+			<if test="bean.svrCustNo != null">
+				 svr_cust_no,
+			</if>
+			<if test="bean.svrCustName != null">
+				 svr_cust_name,
+			</if>
+			<if test="bean.svrStatus != null">
+				 svr_status,
+			</if>
+			<if test="bean.svrRequest != null">
+				 svr_request,
+			</if>
+			<if test="bean.svrCreateId != null">
+				 svr_create_id,
+			</if>
+			<if test="bean.svrCreateBy != null">
+				 svr_create_by,
+			</if>
+			<if test="bean.svrCreateDate != null">
+				 svr_create_date,
+			</if>
+			<if test="bean.svrDueId != null">
+				 svr_due_id,
+			</if>
+			<if test="bean.svrDueTo != null">
+				 svr_due_to,
+			</if>
+			<if test="bean.svrDueDate != null">
+				 svr_due_date,
+			</if>
+			<if test="bean.svrDeal != null">
+				 svr_deal,
+			</if>
+			<if test="bean.svrDealId != null">
+				 svr_deal_id,
+			</if>
+			<if test="bean.svrDealBy != null">
+				 svr_deal_by,
+			</if>
+			<if test="bean.svrDealDate != null">
+				 svr_deal_date,
+			</if>
+			<if test="bean.svrResult != null">
+				 svr_result,
+			</if>
+			<if test="bean.svrSatisfy != null">
+				 svr_satisfy,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.svrId!=null">
+				 #{bean.svrId},
+			</if>
+			<if test="bean.svrType!=null">
+				 #{bean.svrType},
+			</if>
+			<if test="bean.svrTitle!=null">
+				 #{bean.svrTitle},
+			</if>
+			<if test="bean.svrCustNo!=null">
+				 #{bean.svrCustNo},
+			</if>
+			<if test="bean.svrCustName!=null">
+				 #{bean.svrCustName},
+			</if>
+			<if test="bean.svrStatus!=null">
+				 #{bean.svrStatus},
+			</if>
+			<if test="bean.svrRequest!=null">
+				 #{bean.svrRequest},
+			</if>
+			<if test="bean.svrCreateId!=null">
+				 #{bean.svrCreateId},
+			</if>
+			<if test="bean.svrCreateBy!=null">
+				 #{bean.svrCreateBy},
+			</if>
+			<if test="bean.svrCreateDate!=null">
+				 #{bean.svrCreateDate},
+			</if>
+			<if test="bean.svrDueId!=null">
+				 #{bean.svrDueId},
+			</if>
+			<if test="bean.svrDueTo!=null">
+				 #{bean.svrDueTo},
+			</if>
+			<if test="bean.svrDueDate!=null">
+				 #{bean.svrDueDate},
+			</if>
+			<if test="bean.svrDeal!=null">
+				 #{bean.svrDeal},
+			</if>
+			<if test="bean.svrDealId!=null">
+				 #{bean.svrDealId},
+			</if>
+			<if test="bean.svrDealBy!=null">
+				 #{bean.svrDealBy},
+			</if>
+			<if test="bean.svrDealDate!=null">
+				 #{bean.svrDealDate},
+			</if>
+			<if test="bean.svrResult!=null">
+				 #{bean.svrResult},
+			</if>
+			<if test="bean.svrSatisfy!=null">
+				 #{bean.svrSatisfy},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.svrType!=null">
+				 svr_type = VALUES(svr_type),
+			</if>
+			<if test="bean.svrTitle!=null">
+				 svr_title = VALUES(svr_title),
+			</if>
+			<if test="bean.svrCustNo!=null">
+				 svr_cust_no = VALUES(svr_cust_no),
+			</if>
+			<if test="bean.svrCustName!=null">
+				 svr_cust_name = VALUES(svr_cust_name),
+			</if>
+			<if test="bean.svrStatus!=null">
+				 svr_status = VALUES(svr_status),
+			</if>
+			<if test="bean.svrRequest!=null">
+				 svr_request = VALUES(svr_request),
+			</if>
+			<if test="bean.svrCreateId!=null">
+				 svr_create_id = VALUES(svr_create_id),
+			</if>
+			<if test="bean.svrCreateBy!=null">
+				 svr_create_by = VALUES(svr_create_by),
+			</if>
+			<if test="bean.svrCreateDate!=null">
+				 svr_create_date = VALUES(svr_create_date),
+			</if>
+			<if test="bean.svrDueId!=null">
+				 svr_due_id = VALUES(svr_due_id),
+			</if>
+			<if test="bean.svrDueTo!=null">
+				 svr_due_to = VALUES(svr_due_to),
+			</if>
+			<if test="bean.svrDueDate!=null">
+				 svr_due_date = VALUES(svr_due_date),
+			</if>
+			<if test="bean.svrDeal!=null">
+				 svr_deal = VALUES(svr_deal),
+			</if>
+			<if test="bean.svrDealId!=null">
+				 svr_deal_id = VALUES(svr_deal_id),
+			</if>
+			<if test="bean.svrDealBy!=null">
+				 svr_deal_by = VALUES(svr_deal_by),
+			</if>
+			<if test="bean.svrDealDate!=null">
+				 svr_deal_date = VALUES(svr_deal_date),
+			</if>
+			<if test="bean.svrResult!=null">
+				 svr_result = VALUES(svr_result),
+			</if>
+			<if test="bean.svrSatisfy!=null">
+				 svr_satisfy = VALUES(svr_satisfy),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.CstService" useGeneratedKeys="true" keyProperty="svrId">
+		 INSERT INTO cst_service(
+			 svr_type,
+			 svr_title,
+			 svr_cust_no,
+			 svr_cust_name,
+			 svr_status,
+			 svr_request,
+			 svr_create_id,
+			 svr_create_by,
+			 svr_create_date,
+			 svr_due_id,
+			 svr_due_to,
+			 svr_due_date,
+			 svr_deal,
+			 svr_deal_id,
+			 svr_deal_by,
+			 svr_deal_date,
+			 svr_result,
+			 svr_satisfy
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.svrType},
+				 #{item.svrTitle},
+				 #{item.svrCustNo},
+				 #{item.svrCustName},
+				 #{item.svrStatus},
+				 #{item.svrRequest},
+				 #{item.svrCreateId},
+				 #{item.svrCreateBy},
+				 #{item.svrCreateDate},
+				 #{item.svrDueId},
+				 #{item.svrDueTo},
+				 #{item.svrDueDate},
+				 #{item.svrDeal},
+				 #{item.svrDealId},
+				 #{item.svrDealBy},
+				 #{item.svrDealDate},
+				 #{item.svrResult},
+				 #{item.svrSatisfy}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.CstService">
+		 INSERT INTO cst_service(
+			 svr_type,
+			 svr_title,
+			 svr_cust_no,
+			 svr_cust_name,
+			 svr_status,
+			 svr_request,
+			 svr_create_id,
+			 svr_create_by,
+			 svr_create_date,
+			 svr_due_id,
+			 svr_due_to,
+			 svr_due_date,
+			 svr_deal,
+			 svr_deal_id,
+			 svr_deal_by,
+			 svr_deal_date,
+			 svr_result,
+			 svr_satisfy
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.svrType},
+				 #{item.svrTitle},
+				 #{item.svrCustNo},
+				 #{item.svrCustName},
+				 #{item.svrStatus},
+				 #{item.svrRequest},
+				 #{item.svrCreateId},
+				 #{item.svrCreateBy},
+				 #{item.svrCreateDate},
+				 #{item.svrDueId},
+				 #{item.svrDueTo},
+				 #{item.svrDueDate},
+				 #{item.svrDeal},
+				 #{item.svrDealId},
+				 #{item.svrDealBy},
+				 #{item.svrDealDate},
+				 #{item.svrResult},
+				 #{item.svrSatisfy}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			svr_type = VALUES(svr_type),
+			svr_title = VALUES(svr_title),
+			svr_cust_no = VALUES(svr_cust_no),
+			svr_cust_name = VALUES(svr_cust_name),
+			svr_status = VALUES(svr_status),
+			svr_request = VALUES(svr_request),
+			svr_create_id = VALUES(svr_create_id),
+			svr_create_by = VALUES(svr_create_by),
+			svr_create_date = VALUES(svr_create_date),
+			svr_due_id = VALUES(svr_due_id),
+			svr_due_to = VALUES(svr_due_to),
+			svr_due_date = VALUES(svr_due_date),
+			svr_deal = VALUES(svr_deal),
+			svr_deal_id = VALUES(svr_deal_id),
+			svr_deal_by = VALUES(svr_deal_by),
+			svr_deal_date = VALUES(svr_deal_date),
+			svr_result = VALUES(svr_result),
+			svr_satisfy = VALUES(svr_satisfy)
+	</insert>
+
+	<!-- 根据SvrId修改-->
+	<update id="updateBySvrId" parameterType="com.hmk.crmdoem.entity.po.CstService">
+		 UPDATE cst_service
+ 		 <set> 
+			<if test="bean.svrType != null">
+				 svr_type = #{bean.svrType},
+			</if>
+			<if test="bean.svrTitle != null">
+				 svr_title = #{bean.svrTitle},
+			</if>
+			<if test="bean.svrCustNo != null">
+				 svr_cust_no = #{bean.svrCustNo},
+			</if>
+			<if test="bean.svrCustName != null">
+				 svr_cust_name = #{bean.svrCustName},
+			</if>
+			<if test="bean.svrStatus != null">
+				 svr_status = #{bean.svrStatus},
+			</if>
+			<if test="bean.svrRequest != null">
+				 svr_request = #{bean.svrRequest},
+			</if>
+			<if test="bean.svrCreateId != null">
+				 svr_create_id = #{bean.svrCreateId},
+			</if>
+			<if test="bean.svrCreateBy != null">
+				 svr_create_by = #{bean.svrCreateBy},
+			</if>
+			<if test="bean.svrCreateDate != null">
+				 svr_create_date = #{bean.svrCreateDate},
+			</if>
+			<if test="bean.svrDueId != null">
+				 svr_due_id = #{bean.svrDueId},
+			</if>
+			<if test="bean.svrDueTo != null">
+				 svr_due_to = #{bean.svrDueTo},
+			</if>
+			<if test="bean.svrDueDate != null">
+				 svr_due_date = #{bean.svrDueDate},
+			</if>
+			<if test="bean.svrDeal != null">
+				 svr_deal = #{bean.svrDeal},
+			</if>
+			<if test="bean.svrDealId != null">
+				 svr_deal_id = #{bean.svrDealId},
+			</if>
+			<if test="bean.svrDealBy != null">
+				 svr_deal_by = #{bean.svrDealBy},
+			</if>
+			<if test="bean.svrDealDate != null">
+				 svr_deal_date = #{bean.svrDealDate},
+			</if>
+			<if test="bean.svrResult != null">
+				 svr_result = #{bean.svrResult},
+			</if>
+			<if test="bean.svrSatisfy != null">
+				 svr_satisfy = #{bean.svrSatisfy},
+			</if>
+ 		 </set>
+ 		 where svr_id=#{svrId}
+	</update>
+
+	<!-- 根据SvrId删除-->
+	<delete id="deleteBySvrId">
+		delete from cst_service where svr_id=#{svrId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectBySvrId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from cst_service where svr_id=#{svrId}
+	</select>
+
+</mapper>

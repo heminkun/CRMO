@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.CstLostMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.CstLost">
+		<!---->
+		<id column="lst_id" property="lstId"  />
+		<!---->
+		<result column="lst_cust_no" property="lstCustNo"  />
+		<!---->
+		<result column="lst_cust_name" property="lstCustName"  />
+		<!---->
+		<result column="lst_cust_manager_id" property="lstCustManagerId"  />
+		<!---->
+		<result column="lst_cust_manager_name" property="lstCustManagerName"  />
+		<!---->
+		<result column="lst_last_order_date" property="lstLastOrderDate"  />
+		<!---->
+		<result column="lst_lost_date" property="lstLostDate"  />
+		<!---->
+		<result column="lst_delay" property="lstDelay"  />
+		<!---->
+		<result column="lst_reason" property="lstReason"  />
+		<!---->
+		<result column="lst_status" property="lstStatus"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 lst_id,lst_cust_no,lst_cust_name,lst_cust_manager_id,lst_cust_manager_name,
+		 lst_last_order_date,lst_lost_date,lst_delay,lst_reason,lst_status
+		 
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.lstId != null">
+				 and  lst_id = #{query.lstId}
+			</if>
+			<if test="query.lstCustNo != null and query.lstCustNo!=''">
+				 and  lst_cust_no = #{query.lstCustNo}
+			</if>
+			<if test="query.lstCustName != null and query.lstCustName!=''">
+				 and  lst_cust_name = #{query.lstCustName}
+			</if>
+			<if test="query.lstCustManagerId != null">
+				 and  lst_cust_manager_id = #{query.lstCustManagerId}
+			</if>
+			<if test="query.lstCustManagerName != null and query.lstCustManagerName!=''">
+				 and  lst_cust_manager_name = #{query.lstCustManagerName}
+			</if>
+			<if test="query.lstLastOrderDate != null and query.lstLastOrderDate!=''">
+				 <![CDATA[ and  lst_last_order_date=str_to_date(#{query.lstLastOrderDate}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.lstLostDate != null and query.lstLostDate!=''">
+				 <![CDATA[ and  lst_lost_date=str_to_date(#{query.lstLostDate}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.lstDelay != null and query.lstDelay!=''">
+				 and  lst_delay = #{query.lstDelay}
+			</if>
+			<if test="query.lstReason != null and query.lstReason!=''">
+				 and  lst_reason = #{query.lstReason}
+			</if>
+			<if test="query.lstStatus != null and query.lstStatus!=''">
+				 and  lst_status = #{query.lstStatus}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.lstCustNoFuzzy!= null  and query.lstCustNoFuzzy!=''">
+				 and  lst_cust_no like concat('%', #{query.lstCustNoFuzzy}, '%')
+			</if>
+			<if test="query.lstCustNameFuzzy!= null  and query.lstCustNameFuzzy!=''">
+				 and  lst_cust_name like concat('%', #{query.lstCustNameFuzzy}, '%')
+			</if>
+			<if test="query.lstCustManagerNameFuzzy!= null  and query.lstCustManagerNameFuzzy!=''">
+				 and  lst_cust_manager_name like concat('%', #{query.lstCustManagerNameFuzzy}, '%')
+			</if>
+			<if test="query.lstLastOrderDateStart!= null and query.lstLastOrderDateStart!=''">
+				 <![CDATA[ and  lst_last_order_date>=str_to_date(#{query.lstLastOrderDateStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.lstLastOrderDateEnd!= null and query.lstLastOrderDateEnd!=''">
+				 <![CDATA[ and  lst_last_order_date< date_sub(str_to_date(#{query.lstLastOrderDateEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="query.lstLostDateStart!= null and query.lstLostDateStart!=''">
+				 <![CDATA[ and  lst_lost_date>=str_to_date(#{query.lstLostDateStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.lstLostDateEnd!= null and query.lstLostDateEnd!=''">
+				 <![CDATA[ and  lst_lost_date< date_sub(str_to_date(#{query.lstLostDateEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="query.lstDelayFuzzy!= null  and query.lstDelayFuzzy!=''">
+				 and  lst_delay like concat('%', #{query.lstDelayFuzzy}, '%')
+			</if>
+			<if test="query.lstReasonFuzzy!= null  and query.lstReasonFuzzy!=''">
+				 and  lst_reason like concat('%', #{query.lstReasonFuzzy}, '%')
+			</if>
+			<if test="query.lstStatusFuzzy!= null  and query.lstStatusFuzzy!=''">
+				 and  lst_status like concat('%', #{query.lstStatusFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM cst_lost <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM cst_lost <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.CstLost">
+		<selectKey keyProperty="bean.lstId" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO cst_lost
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.lstCustNo != null">
+				 lst_cust_no,
+			</if>
+			<if test="bean.lstCustName != null">
+				 lst_cust_name,
+			</if>
+			<if test="bean.lstCustManagerId != null">
+				 lst_cust_manager_id,
+			</if>
+			<if test="bean.lstCustManagerName != null">
+				 lst_cust_manager_name,
+			</if>
+			<if test="bean.lstLastOrderDate != null">
+				 lst_last_order_date,
+			</if>
+			<if test="bean.lstLostDate != null">
+				 lst_lost_date,
+			</if>
+			<if test="bean.lstDelay != null">
+				 lst_delay,
+			</if>
+			<if test="bean.lstReason != null">
+				 lst_reason,
+			</if>
+			<if test="bean.lstStatus != null">
+				 lst_status,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.lstCustNo!=null">
+				 #{bean.lstCustNo},
+			</if>
+			<if test="bean.lstCustName!=null">
+				 #{bean.lstCustName},
+			</if>
+			<if test="bean.lstCustManagerId!=null">
+				 #{bean.lstCustManagerId},
+			</if>
+			<if test="bean.lstCustManagerName!=null">
+				 #{bean.lstCustManagerName},
+			</if>
+			<if test="bean.lstLastOrderDate!=null">
+				 #{bean.lstLastOrderDate},
+			</if>
+			<if test="bean.lstLostDate!=null">
+				 #{bean.lstLostDate},
+			</if>
+			<if test="bean.lstDelay!=null">
+				 #{bean.lstDelay},
+			</if>
+			<if test="bean.lstReason!=null">
+				 #{bean.lstReason},
+			</if>
+			<if test="bean.lstStatus!=null">
+				 #{bean.lstStatus},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.CstLost">
+		 INSERT INTO cst_lost
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.lstId != null">
+				 lst_id,
+			</if>
+			<if test="bean.lstCustNo != null">
+				 lst_cust_no,
+			</if>
+			<if test="bean.lstCustName != null">
+				 lst_cust_name,
+			</if>
+			<if test="bean.lstCustManagerId != null">
+				 lst_cust_manager_id,
+			</if>
+			<if test="bean.lstCustManagerName != null">
+				 lst_cust_manager_name,
+			</if>
+			<if test="bean.lstLastOrderDate != null">
+				 lst_last_order_date,
+			</if>
+			<if test="bean.lstLostDate != null">
+				 lst_lost_date,
+			</if>
+			<if test="bean.lstDelay != null">
+				 lst_delay,
+			</if>
+			<if test="bean.lstReason != null">
+				 lst_reason,
+			</if>
+			<if test="bean.lstStatus != null">
+				 lst_status,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.lstId!=null">
+				 #{bean.lstId},
+			</if>
+			<if test="bean.lstCustNo!=null">
+				 #{bean.lstCustNo},
+			</if>
+			<if test="bean.lstCustName!=null">
+				 #{bean.lstCustName},
+			</if>
+			<if test="bean.lstCustManagerId!=null">
+				 #{bean.lstCustManagerId},
+			</if>
+			<if test="bean.lstCustManagerName!=null">
+				 #{bean.lstCustManagerName},
+			</if>
+			<if test="bean.lstLastOrderDate!=null">
+				 #{bean.lstLastOrderDate},
+			</if>
+			<if test="bean.lstLostDate!=null">
+				 #{bean.lstLostDate},
+			</if>
+			<if test="bean.lstDelay!=null">
+				 #{bean.lstDelay},
+			</if>
+			<if test="bean.lstReason!=null">
+				 #{bean.lstReason},
+			</if>
+			<if test="bean.lstStatus!=null">
+				 #{bean.lstStatus},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.lstCustNo!=null">
+				 lst_cust_no = VALUES(lst_cust_no),
+			</if>
+			<if test="bean.lstCustName!=null">
+				 lst_cust_name = VALUES(lst_cust_name),
+			</if>
+			<if test="bean.lstCustManagerId!=null">
+				 lst_cust_manager_id = VALUES(lst_cust_manager_id),
+			</if>
+			<if test="bean.lstCustManagerName!=null">
+				 lst_cust_manager_name = VALUES(lst_cust_manager_name),
+			</if>
+			<if test="bean.lstLastOrderDate!=null">
+				 lst_last_order_date = VALUES(lst_last_order_date),
+			</if>
+			<if test="bean.lstLostDate!=null">
+				 lst_lost_date = VALUES(lst_lost_date),
+			</if>
+			<if test="bean.lstDelay!=null">
+				 lst_delay = VALUES(lst_delay),
+			</if>
+			<if test="bean.lstReason!=null">
+				 lst_reason = VALUES(lst_reason),
+			</if>
+			<if test="bean.lstStatus!=null">
+				 lst_status = VALUES(lst_status),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.CstLost" useGeneratedKeys="true" keyProperty="lstId">
+		 INSERT INTO cst_lost(
+			 lst_cust_no,
+			 lst_cust_name,
+			 lst_cust_manager_id,
+			 lst_cust_manager_name,
+			 lst_last_order_date,
+			 lst_lost_date,
+			 lst_delay,
+			 lst_reason,
+			 lst_status
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.lstCustNo},
+				 #{item.lstCustName},
+				 #{item.lstCustManagerId},
+				 #{item.lstCustManagerName},
+				 #{item.lstLastOrderDate},
+				 #{item.lstLostDate},
+				 #{item.lstDelay},
+				 #{item.lstReason},
+				 #{item.lstStatus}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.CstLost">
+		 INSERT INTO cst_lost(
+			 lst_cust_no,
+			 lst_cust_name,
+			 lst_cust_manager_id,
+			 lst_cust_manager_name,
+			 lst_last_order_date,
+			 lst_lost_date,
+			 lst_delay,
+			 lst_reason,
+			 lst_status
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.lstCustNo},
+				 #{item.lstCustName},
+				 #{item.lstCustManagerId},
+				 #{item.lstCustManagerName},
+				 #{item.lstLastOrderDate},
+				 #{item.lstLostDate},
+				 #{item.lstDelay},
+				 #{item.lstReason},
+				 #{item.lstStatus}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			lst_cust_no = VALUES(lst_cust_no),
+			lst_cust_name = VALUES(lst_cust_name),
+			lst_cust_manager_id = VALUES(lst_cust_manager_id),
+			lst_cust_manager_name = VALUES(lst_cust_manager_name),
+			lst_last_order_date = VALUES(lst_last_order_date),
+			lst_lost_date = VALUES(lst_lost_date),
+			lst_delay = VALUES(lst_delay),
+			lst_reason = VALUES(lst_reason),
+			lst_status = VALUES(lst_status)
+	</insert>
+
+	<!-- 根据LstId修改-->
+	<update id="updateByLstId" parameterType="com.hmk.crmdoem.entity.po.CstLost">
+		 UPDATE cst_lost
+ 		 <set> 
+			<if test="bean.lstCustNo != null">
+				 lst_cust_no = #{bean.lstCustNo},
+			</if>
+			<if test="bean.lstCustName != null">
+				 lst_cust_name = #{bean.lstCustName},
+			</if>
+			<if test="bean.lstCustManagerId != null">
+				 lst_cust_manager_id = #{bean.lstCustManagerId},
+			</if>
+			<if test="bean.lstCustManagerName != null">
+				 lst_cust_manager_name = #{bean.lstCustManagerName},
+			</if>
+			<if test="bean.lstLastOrderDate != null">
+				 lst_last_order_date = #{bean.lstLastOrderDate},
+			</if>
+			<if test="bean.lstLostDate != null">
+				 lst_lost_date = #{bean.lstLostDate},
+			</if>
+			<if test="bean.lstDelay != null">
+				 lst_delay = #{bean.lstDelay},
+			</if>
+			<if test="bean.lstReason != null">
+				 lst_reason = #{bean.lstReason},
+			</if>
+			<if test="bean.lstStatus != null">
+				 lst_status = #{bean.lstStatus},
+			</if>
+ 		 </set>
+ 		 where lst_id=#{lstId}
+	</update>
+
+	<!-- 根据LstId删除-->
+	<delete id="deleteByLstId">
+		delete from cst_lost where lst_id=#{lstId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByLstId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from cst_lost where lst_id=#{lstId}
+	</select>
+
+</mapper>

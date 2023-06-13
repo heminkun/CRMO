@@ -1,0 +1,776 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.CstCustomerMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.CstCustomer">
+		<!---->
+		<result column="cust_no" property="custNo"  />
+		<!---->
+		<result column="cust_name" property="custName"  />
+		<!---->
+		<result column="cust_region" property="custRegion"  />
+		<!---->
+		<result column="cust_manager_id" property="custManagerId"  />
+		<!---->
+		<result column="cust_manager_name" property="custManagerName"  />
+		<!---->
+		<result column="cust_level" property="custLevel"  />
+		<!---->
+		<result column="cust_satisfy" property="custSatisfy"  />
+		<!---->
+		<result column="cust_credit" property="custCredit"  />
+		<!---->
+		<result column="cust_addr" property="custAddr"  />
+		<!---->
+		<result column="cust_zip" property="custZip"  />
+		<!---->
+		<result column="cust_tel" property="custTel"  />
+		<!---->
+		<result column="cust_fax" property="custFax"  />
+		<!---->
+		<result column="cust_website" property="custWebsite"  />
+		<!---->
+		<result column="cust_licence_no" property="custLicenceNo"  />
+		<!---->
+		<result column="cust_chieftain" property="custChieftain"  />
+		<!---->
+		<result column="cust_bankroll" property="custBankroll"  />
+		<!---->
+		<result column="cust_turnover" property="custTurnover"  />
+		<!---->
+		<result column="cust_bank" property="custBank"  />
+		<!---->
+		<result column="cust_bank_account" property="custBankAccount"  />
+		<!---->
+		<result column="cust_local_tax_no" property="custLocalTaxNo"  />
+		<!---->
+		<result column="cust_national_tax_no" property="custNationalTaxNo"  />
+		<!---->
+		<result column="cust_status" property="custStatus"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 cust_no,cust_name,cust_region,cust_manager_id,cust_manager_name,
+		 cust_level,cust_satisfy,cust_credit,cust_addr,cust_zip,
+		 cust_tel,cust_fax,cust_website,cust_licence_no,cust_chieftain,
+		 cust_bankroll,cust_turnover,cust_bank,cust_bank_account,cust_local_tax_no,
+		 cust_national_tax_no,cust_status
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.custNo != null and query.custNo!=''">
+				 and  cust_no = #{query.custNo}
+			</if>
+			<if test="query.custName != null and query.custName!=''">
+				 and  cust_name = #{query.custName}
+			</if>
+			<if test="query.custRegion != null and query.custRegion!=''">
+				 and  cust_region = #{query.custRegion}
+			</if>
+			<if test="query.custManagerId != null">
+				 and  cust_manager_id = #{query.custManagerId}
+			</if>
+			<if test="query.custManagerName != null and query.custManagerName!=''">
+				 and  cust_manager_name = #{query.custManagerName}
+			</if>
+			<if test="query.custLevel != null">
+				 and  cust_level = #{query.custLevel}
+			</if>
+			<if test="query.custSatisfy != null">
+				 and  cust_satisfy = #{query.custSatisfy}
+			</if>
+			<if test="query.custCredit != null">
+				 and  cust_credit = #{query.custCredit}
+			</if>
+			<if test="query.custAddr != null and query.custAddr!=''">
+				 and  cust_addr = #{query.custAddr}
+			</if>
+			<if test="query.custZip != null and query.custZip!=''">
+				 and  cust_zip = #{query.custZip}
+			</if>
+			<if test="query.custTel != null and query.custTel!=''">
+				 and  cust_tel = #{query.custTel}
+			</if>
+			<if test="query.custFax != null and query.custFax!=''">
+				 and  cust_fax = #{query.custFax}
+			</if>
+			<if test="query.custWebsite != null and query.custWebsite!=''">
+				 and  cust_website = #{query.custWebsite}
+			</if>
+			<if test="query.custLicenceNo != null and query.custLicenceNo!=''">
+				 and  cust_licence_no = #{query.custLicenceNo}
+			</if>
+			<if test="query.custChieftain != null and query.custChieftain!=''">
+				 and  cust_chieftain = #{query.custChieftain}
+			</if>
+			<if test="query.custBankroll != null">
+				 and  cust_bankroll = #{query.custBankroll}
+			</if>
+			<if test="query.custTurnover != null">
+				 and  cust_turnover = #{query.custTurnover}
+			</if>
+			<if test="query.custBank != null and query.custBank!=''">
+				 and  cust_bank = #{query.custBank}
+			</if>
+			<if test="query.custBankAccount != null and query.custBankAccount!=''">
+				 and  cust_bank_account = #{query.custBankAccount}
+			</if>
+			<if test="query.custLocalTaxNo != null and query.custLocalTaxNo!=''">
+				 and  cust_local_tax_no = #{query.custLocalTaxNo}
+			</if>
+			<if test="query.custNationalTaxNo != null and query.custNationalTaxNo!=''">
+				 and  cust_national_tax_no = #{query.custNationalTaxNo}
+			</if>
+			<if test="query.custStatus != null and query.custStatus!=''">
+				 and  cust_status = #{query.custStatus}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.custNoFuzzy!= null  and query.custNoFuzzy!=''">
+				 and  cust_no like concat('%', #{query.custNoFuzzy}, '%')
+			</if>
+			<if test="query.custNameFuzzy!= null  and query.custNameFuzzy!=''">
+				 and  cust_name like concat('%', #{query.custNameFuzzy}, '%')
+			</if>
+			<if test="query.custRegionFuzzy!= null  and query.custRegionFuzzy!=''">
+				 and  cust_region like concat('%', #{query.custRegionFuzzy}, '%')
+			</if>
+			<if test="query.custManagerNameFuzzy!= null  and query.custManagerNameFuzzy!=''">
+				 and  cust_manager_name like concat('%', #{query.custManagerNameFuzzy}, '%')
+			</if>
+			<if test="query.custAddrFuzzy!= null  and query.custAddrFuzzy!=''">
+				 and  cust_addr like concat('%', #{query.custAddrFuzzy}, '%')
+			</if>
+			<if test="query.custZipFuzzy!= null  and query.custZipFuzzy!=''">
+				 and  cust_zip like concat('%', #{query.custZipFuzzy}, '%')
+			</if>
+			<if test="query.custTelFuzzy!= null  and query.custTelFuzzy!=''">
+				 and  cust_tel like concat('%', #{query.custTelFuzzy}, '%')
+			</if>
+			<if test="query.custFaxFuzzy!= null  and query.custFaxFuzzy!=''">
+				 and  cust_fax like concat('%', #{query.custFaxFuzzy}, '%')
+			</if>
+			<if test="query.custWebsiteFuzzy!= null  and query.custWebsiteFuzzy!=''">
+				 and  cust_website like concat('%', #{query.custWebsiteFuzzy}, '%')
+			</if>
+			<if test="query.custLicenceNoFuzzy!= null  and query.custLicenceNoFuzzy!=''">
+				 and  cust_licence_no like concat('%', #{query.custLicenceNoFuzzy}, '%')
+			</if>
+			<if test="query.custChieftainFuzzy!= null  and query.custChieftainFuzzy!=''">
+				 and  cust_chieftain like concat('%', #{query.custChieftainFuzzy}, '%')
+			</if>
+			<if test="query.custBankFuzzy!= null  and query.custBankFuzzy!=''">
+				 and  cust_bank like concat('%', #{query.custBankFuzzy}, '%')
+			</if>
+			<if test="query.custBankAccountFuzzy!= null  and query.custBankAccountFuzzy!=''">
+				 and  cust_bank_account like concat('%', #{query.custBankAccountFuzzy}, '%')
+			</if>
+			<if test="query.custLocalTaxNoFuzzy!= null  and query.custLocalTaxNoFuzzy!=''">
+				 and  cust_local_tax_no like concat('%', #{query.custLocalTaxNoFuzzy}, '%')
+			</if>
+			<if test="query.custNationalTaxNoFuzzy!= null  and query.custNationalTaxNoFuzzy!=''">
+				 and  cust_national_tax_no like concat('%', #{query.custNationalTaxNoFuzzy}, '%')
+			</if>
+			<if test="query.custStatusFuzzy!= null  and query.custStatusFuzzy!=''">
+				 and  cust_status like concat('%', #{query.custStatusFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM cst_customer <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM cst_customer <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.CstCustomer">
+		 INSERT INTO cst_customer
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.custNo != null">
+				 cust_no,
+			</if>
+			<if test="bean.custName != null">
+				 cust_name,
+			</if>
+			<if test="bean.custRegion != null">
+				 cust_region,
+			</if>
+			<if test="bean.custManagerId != null">
+				 cust_manager_id,
+			</if>
+			<if test="bean.custManagerName != null">
+				 cust_manager_name,
+			</if>
+			<if test="bean.custLevel != null">
+				 cust_level,
+			</if>
+			<if test="bean.custSatisfy != null">
+				 cust_satisfy,
+			</if>
+			<if test="bean.custCredit != null">
+				 cust_credit,
+			</if>
+			<if test="bean.custAddr != null">
+				 cust_addr,
+			</if>
+			<if test="bean.custZip != null">
+				 cust_zip,
+			</if>
+			<if test="bean.custTel != null">
+				 cust_tel,
+			</if>
+			<if test="bean.custFax != null">
+				 cust_fax,
+			</if>
+			<if test="bean.custWebsite != null">
+				 cust_website,
+			</if>
+			<if test="bean.custLicenceNo != null">
+				 cust_licence_no,
+			</if>
+			<if test="bean.custChieftain != null">
+				 cust_chieftain,
+			</if>
+			<if test="bean.custBankroll != null">
+				 cust_bankroll,
+			</if>
+			<if test="bean.custTurnover != null">
+				 cust_turnover,
+			</if>
+			<if test="bean.custBank != null">
+				 cust_bank,
+			</if>
+			<if test="bean.custBankAccount != null">
+				 cust_bank_account,
+			</if>
+			<if test="bean.custLocalTaxNo != null">
+				 cust_local_tax_no,
+			</if>
+			<if test="bean.custNationalTaxNo != null">
+				 cust_national_tax_no,
+			</if>
+			<if test="bean.custStatus != null">
+				 cust_status,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.custNo!=null">
+				 #{bean.custNo},
+			</if>
+			<if test="bean.custName!=null">
+				 #{bean.custName},
+			</if>
+			<if test="bean.custRegion!=null">
+				 #{bean.custRegion},
+			</if>
+			<if test="bean.custManagerId!=null">
+				 #{bean.custManagerId},
+			</if>
+			<if test="bean.custManagerName!=null">
+				 #{bean.custManagerName},
+			</if>
+			<if test="bean.custLevel!=null">
+				 #{bean.custLevel},
+			</if>
+			<if test="bean.custSatisfy!=null">
+				 #{bean.custSatisfy},
+			</if>
+			<if test="bean.custCredit!=null">
+				 #{bean.custCredit},
+			</if>
+			<if test="bean.custAddr!=null">
+				 #{bean.custAddr},
+			</if>
+			<if test="bean.custZip!=null">
+				 #{bean.custZip},
+			</if>
+			<if test="bean.custTel!=null">
+				 #{bean.custTel},
+			</if>
+			<if test="bean.custFax!=null">
+				 #{bean.custFax},
+			</if>
+			<if test="bean.custWebsite!=null">
+				 #{bean.custWebsite},
+			</if>
+			<if test="bean.custLicenceNo!=null">
+				 #{bean.custLicenceNo},
+			</if>
+			<if test="bean.custChieftain!=null">
+				 #{bean.custChieftain},
+			</if>
+			<if test="bean.custBankroll!=null">
+				 #{bean.custBankroll},
+			</if>
+			<if test="bean.custTurnover!=null">
+				 #{bean.custTurnover},
+			</if>
+			<if test="bean.custBank!=null">
+				 #{bean.custBank},
+			</if>
+			<if test="bean.custBankAccount!=null">
+				 #{bean.custBankAccount},
+			</if>
+			<if test="bean.custLocalTaxNo!=null">
+				 #{bean.custLocalTaxNo},
+			</if>
+			<if test="bean.custNationalTaxNo!=null">
+				 #{bean.custNationalTaxNo},
+			</if>
+			<if test="bean.custStatus!=null">
+				 #{bean.custStatus},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.CstCustomer">
+		 INSERT INTO cst_customer
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.custNo != null">
+				 cust_no,
+			</if>
+			<if test="bean.custName != null">
+				 cust_name,
+			</if>
+			<if test="bean.custRegion != null">
+				 cust_region,
+			</if>
+			<if test="bean.custManagerId != null">
+				 cust_manager_id,
+			</if>
+			<if test="bean.custManagerName != null">
+				 cust_manager_name,
+			</if>
+			<if test="bean.custLevel != null">
+				 cust_level,
+			</if>
+			<if test="bean.custSatisfy != null">
+				 cust_satisfy,
+			</if>
+			<if test="bean.custCredit != null">
+				 cust_credit,
+			</if>
+			<if test="bean.custAddr != null">
+				 cust_addr,
+			</if>
+			<if test="bean.custZip != null">
+				 cust_zip,
+			</if>
+			<if test="bean.custTel != null">
+				 cust_tel,
+			</if>
+			<if test="bean.custFax != null">
+				 cust_fax,
+			</if>
+			<if test="bean.custWebsite != null">
+				 cust_website,
+			</if>
+			<if test="bean.custLicenceNo != null">
+				 cust_licence_no,
+			</if>
+			<if test="bean.custChieftain != null">
+				 cust_chieftain,
+			</if>
+			<if test="bean.custBankroll != null">
+				 cust_bankroll,
+			</if>
+			<if test="bean.custTurnover != null">
+				 cust_turnover,
+			</if>
+			<if test="bean.custBank != null">
+				 cust_bank,
+			</if>
+			<if test="bean.custBankAccount != null">
+				 cust_bank_account,
+			</if>
+			<if test="bean.custLocalTaxNo != null">
+				 cust_local_tax_no,
+			</if>
+			<if test="bean.custNationalTaxNo != null">
+				 cust_national_tax_no,
+			</if>
+			<if test="bean.custStatus != null">
+				 cust_status,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.custNo!=null">
+				 #{bean.custNo},
+			</if>
+			<if test="bean.custName!=null">
+				 #{bean.custName},
+			</if>
+			<if test="bean.custRegion!=null">
+				 #{bean.custRegion},
+			</if>
+			<if test="bean.custManagerId!=null">
+				 #{bean.custManagerId},
+			</if>
+			<if test="bean.custManagerName!=null">
+				 #{bean.custManagerName},
+			</if>
+			<if test="bean.custLevel!=null">
+				 #{bean.custLevel},
+			</if>
+			<if test="bean.custSatisfy!=null">
+				 #{bean.custSatisfy},
+			</if>
+			<if test="bean.custCredit!=null">
+				 #{bean.custCredit},
+			</if>
+			<if test="bean.custAddr!=null">
+				 #{bean.custAddr},
+			</if>
+			<if test="bean.custZip!=null">
+				 #{bean.custZip},
+			</if>
+			<if test="bean.custTel!=null">
+				 #{bean.custTel},
+			</if>
+			<if test="bean.custFax!=null">
+				 #{bean.custFax},
+			</if>
+			<if test="bean.custWebsite!=null">
+				 #{bean.custWebsite},
+			</if>
+			<if test="bean.custLicenceNo!=null">
+				 #{bean.custLicenceNo},
+			</if>
+			<if test="bean.custChieftain!=null">
+				 #{bean.custChieftain},
+			</if>
+			<if test="bean.custBankroll!=null">
+				 #{bean.custBankroll},
+			</if>
+			<if test="bean.custTurnover!=null">
+				 #{bean.custTurnover},
+			</if>
+			<if test="bean.custBank!=null">
+				 #{bean.custBank},
+			</if>
+			<if test="bean.custBankAccount!=null">
+				 #{bean.custBankAccount},
+			</if>
+			<if test="bean.custLocalTaxNo!=null">
+				 #{bean.custLocalTaxNo},
+			</if>
+			<if test="bean.custNationalTaxNo!=null">
+				 #{bean.custNationalTaxNo},
+			</if>
+			<if test="bean.custStatus!=null">
+				 #{bean.custStatus},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.custNo!=null">
+				 cust_no = VALUES(cust_no),
+			</if>
+			<if test="bean.custName!=null">
+				 cust_name = VALUES(cust_name),
+			</if>
+			<if test="bean.custRegion!=null">
+				 cust_region = VALUES(cust_region),
+			</if>
+			<if test="bean.custManagerId!=null">
+				 cust_manager_id = VALUES(cust_manager_id),
+			</if>
+			<if test="bean.custManagerName!=null">
+				 cust_manager_name = VALUES(cust_manager_name),
+			</if>
+			<if test="bean.custLevel!=null">
+				 cust_level = VALUES(cust_level),
+			</if>
+			<if test="bean.custSatisfy!=null">
+				 cust_satisfy = VALUES(cust_satisfy),
+			</if>
+			<if test="bean.custCredit!=null">
+				 cust_credit = VALUES(cust_credit),
+			</if>
+			<if test="bean.custAddr!=null">
+				 cust_addr = VALUES(cust_addr),
+			</if>
+			<if test="bean.custZip!=null">
+				 cust_zip = VALUES(cust_zip),
+			</if>
+			<if test="bean.custTel!=null">
+				 cust_tel = VALUES(cust_tel),
+			</if>
+			<if test="bean.custFax!=null">
+				 cust_fax = VALUES(cust_fax),
+			</if>
+			<if test="bean.custWebsite!=null">
+				 cust_website = VALUES(cust_website),
+			</if>
+			<if test="bean.custLicenceNo!=null">
+				 cust_licence_no = VALUES(cust_licence_no),
+			</if>
+			<if test="bean.custChieftain!=null">
+				 cust_chieftain = VALUES(cust_chieftain),
+			</if>
+			<if test="bean.custBankroll!=null">
+				 cust_bankroll = VALUES(cust_bankroll),
+			</if>
+			<if test="bean.custTurnover!=null">
+				 cust_turnover = VALUES(cust_turnover),
+			</if>
+			<if test="bean.custBank!=null">
+				 cust_bank = VALUES(cust_bank),
+			</if>
+			<if test="bean.custBankAccount!=null">
+				 cust_bank_account = VALUES(cust_bank_account),
+			</if>
+			<if test="bean.custLocalTaxNo!=null">
+				 cust_local_tax_no = VALUES(cust_local_tax_no),
+			</if>
+			<if test="bean.custNationalTaxNo!=null">
+				 cust_national_tax_no = VALUES(cust_national_tax_no),
+			</if>
+			<if test="bean.custStatus!=null">
+				 cust_status = VALUES(cust_status),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.CstCustomer">
+		 INSERT INTO cst_customer(
+			 cust_no,
+			 cust_name,
+			 cust_region,
+			 cust_manager_id,
+			 cust_manager_name,
+			 cust_level,
+			 cust_satisfy,
+			 cust_credit,
+			 cust_addr,
+			 cust_zip,
+			 cust_tel,
+			 cust_fax,
+			 cust_website,
+			 cust_licence_no,
+			 cust_chieftain,
+			 cust_bankroll,
+			 cust_turnover,
+			 cust_bank,
+			 cust_bank_account,
+			 cust_local_tax_no,
+			 cust_national_tax_no,
+			 cust_status
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.custNo},
+				 #{item.custName},
+				 #{item.custRegion},
+				 #{item.custManagerId},
+				 #{item.custManagerName},
+				 #{item.custLevel},
+				 #{item.custSatisfy},
+				 #{item.custCredit},
+				 #{item.custAddr},
+				 #{item.custZip},
+				 #{item.custTel},
+				 #{item.custFax},
+				 #{item.custWebsite},
+				 #{item.custLicenceNo},
+				 #{item.custChieftain},
+				 #{item.custBankroll},
+				 #{item.custTurnover},
+				 #{item.custBank},
+				 #{item.custBankAccount},
+				 #{item.custLocalTaxNo},
+				 #{item.custNationalTaxNo},
+				 #{item.custStatus}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.CstCustomer">
+		 INSERT INTO cst_customer(
+			 cust_no,
+			 cust_name,
+			 cust_region,
+			 cust_manager_id,
+			 cust_manager_name,
+			 cust_level,
+			 cust_satisfy,
+			 cust_credit,
+			 cust_addr,
+			 cust_zip,
+			 cust_tel,
+			 cust_fax,
+			 cust_website,
+			 cust_licence_no,
+			 cust_chieftain,
+			 cust_bankroll,
+			 cust_turnover,
+			 cust_bank,
+			 cust_bank_account,
+			 cust_local_tax_no,
+			 cust_national_tax_no,
+			 cust_status
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.custNo},
+				 #{item.custName},
+				 #{item.custRegion},
+				 #{item.custManagerId},
+				 #{item.custManagerName},
+				 #{item.custLevel},
+				 #{item.custSatisfy},
+				 #{item.custCredit},
+				 #{item.custAddr},
+				 #{item.custZip},
+				 #{item.custTel},
+				 #{item.custFax},
+				 #{item.custWebsite},
+				 #{item.custLicenceNo},
+				 #{item.custChieftain},
+				 #{item.custBankroll},
+				 #{item.custTurnover},
+				 #{item.custBank},
+				 #{item.custBankAccount},
+				 #{item.custLocalTaxNo},
+				 #{item.custNationalTaxNo},
+				 #{item.custStatus}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			cust_no = VALUES(cust_no),
+			cust_name = VALUES(cust_name),
+			cust_region = VALUES(cust_region),
+			cust_manager_id = VALUES(cust_manager_id),
+			cust_manager_name = VALUES(cust_manager_name),
+			cust_level = VALUES(cust_level),
+			cust_satisfy = VALUES(cust_satisfy),
+			cust_credit = VALUES(cust_credit),
+			cust_addr = VALUES(cust_addr),
+			cust_zip = VALUES(cust_zip),
+			cust_tel = VALUES(cust_tel),
+			cust_fax = VALUES(cust_fax),
+			cust_website = VALUES(cust_website),
+			cust_licence_no = VALUES(cust_licence_no),
+			cust_chieftain = VALUES(cust_chieftain),
+			cust_bankroll = VALUES(cust_bankroll),
+			cust_turnover = VALUES(cust_turnover),
+			cust_bank = VALUES(cust_bank),
+			cust_bank_account = VALUES(cust_bank_account),
+			cust_local_tax_no = VALUES(cust_local_tax_no),
+			cust_national_tax_no = VALUES(cust_national_tax_no),
+			cust_status = VALUES(cust_status)
+	</insert>
+
+	<!-- 根据CustNo修改-->
+	<update id="updateByCustNo" parameterType="com.hmk.crmdoem.entity.po.CstCustomer">
+		 UPDATE cst_customer
+ 		 <set> 
+			<if test="bean.custName != null">
+				 cust_name = #{bean.custName},
+			</if>
+			<if test="bean.custRegion != null">
+				 cust_region = #{bean.custRegion},
+			</if>
+			<if test="bean.custManagerId != null">
+				 cust_manager_id = #{bean.custManagerId},
+			</if>
+			<if test="bean.custManagerName != null">
+				 cust_manager_name = #{bean.custManagerName},
+			</if>
+			<if test="bean.custLevel != null">
+				 cust_level = #{bean.custLevel},
+			</if>
+			<if test="bean.custSatisfy != null">
+				 cust_satisfy = #{bean.custSatisfy},
+			</if>
+			<if test="bean.custCredit != null">
+				 cust_credit = #{bean.custCredit},
+			</if>
+			<if test="bean.custAddr != null">
+				 cust_addr = #{bean.custAddr},
+			</if>
+			<if test="bean.custZip != null">
+				 cust_zip = #{bean.custZip},
+			</if>
+			<if test="bean.custTel != null">
+				 cust_tel = #{bean.custTel},
+			</if>
+			<if test="bean.custFax != null">
+				 cust_fax = #{bean.custFax},
+			</if>
+			<if test="bean.custWebsite != null">
+				 cust_website = #{bean.custWebsite},
+			</if>
+			<if test="bean.custLicenceNo != null">
+				 cust_licence_no = #{bean.custLicenceNo},
+			</if>
+			<if test="bean.custChieftain != null">
+				 cust_chieftain = #{bean.custChieftain},
+			</if>
+			<if test="bean.custBankroll != null">
+				 cust_bankroll = #{bean.custBankroll},
+			</if>
+			<if test="bean.custTurnover != null">
+				 cust_turnover = #{bean.custTurnover},
+			</if>
+			<if test="bean.custBank != null">
+				 cust_bank = #{bean.custBank},
+			</if>
+			<if test="bean.custBankAccount != null">
+				 cust_bank_account = #{bean.custBankAccount},
+			</if>
+			<if test="bean.custLocalTaxNo != null">
+				 cust_local_tax_no = #{bean.custLocalTaxNo},
+			</if>
+			<if test="bean.custNationalTaxNo != null">
+				 cust_national_tax_no = #{bean.custNationalTaxNo},
+			</if>
+			<if test="bean.custStatus != null">
+				 cust_status = #{bean.custStatus},
+			</if>
+ 		 </set>
+ 		 where cust_no=#{custNo}
+	</update>
+
+	<!-- 根据CustNo删除-->
+	<delete id="deleteByCustNo">
+		delete from cst_customer where cust_no=#{custNo}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByCustNo" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from cst_customer where cust_no=#{custNo}
+	</select>
+
+	<select id="selectCustNoByCustManagerId" resultMap="base_result_map">
+		select cust_no from cst_customer where cust_manager_id=#{custManagerId}
+	</select>
+</mapper>

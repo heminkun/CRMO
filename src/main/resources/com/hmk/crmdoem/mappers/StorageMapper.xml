@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.crmdoem.mappers.StorageMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.hmk.crmdoem.entity.po.Storage">
+		<!---->
+		<id column="stk_id" property="stkId"  />
+		<!---->
+		<result column="stk_prod_id" property="stkProdId"  />
+		<!---->
+		<result column="stk_warehouse" property="stkWarehouse"  />
+		<!---->
+		<result column="stk_ware" property="stkWare"  />
+		<!---->
+		<result column="stk_count" property="stkCount"  />
+		<!---->
+		<result column="stk_memo" property="stkMemo"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 stk_id,stk_prod_id,stk_warehouse,stk_ware,stk_count,
+		 stk_memo
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.stkId != null">
+				 and  stk_id = #{query.stkId}
+			</if>
+			<if test="query.stkProdId != null">
+				 and  stk_prod_id = #{query.stkProdId}
+			</if>
+			<if test="query.stkWarehouse != null and query.stkWarehouse!=''">
+				 and  stk_warehouse = #{query.stkWarehouse}
+			</if>
+			<if test="query.stkWare != null and query.stkWare!=''">
+				 and  stk_ware = #{query.stkWare}
+			</if>
+			<if test="query.stkCount != null">
+				 and  stk_count = #{query.stkCount}
+			</if>
+			<if test="query.stkMemo != null and query.stkMemo!=''">
+				 and  stk_memo = #{query.stkMemo}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.stkWarehouseFuzzy!= null  and query.stkWarehouseFuzzy!=''">
+				 and  stk_warehouse like concat('%', #{query.stkWarehouseFuzzy}, '%')
+			</if>
+			<if test="query.stkWareFuzzy!= null  and query.stkWareFuzzy!=''">
+				 and  stk_ware like concat('%', #{query.stkWareFuzzy}, '%')
+			</if>
+			<if test="query.stkMemoFuzzy!= null  and query.stkMemoFuzzy!=''">
+				 and  stk_memo like concat('%', #{query.stkMemoFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM storage <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM storage <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.hmk.crmdoem.entity.po.Storage">
+		<selectKey keyProperty="bean.stkId" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO storage
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.stkProdId != null">
+				 stk_prod_id,
+			</if>
+			<if test="bean.stkWarehouse != null">
+				 stk_warehouse,
+			</if>
+			<if test="bean.stkWare != null">
+				 stk_ware,
+			</if>
+			<if test="bean.stkCount != null">
+				 stk_count,
+			</if>
+			<if test="bean.stkMemo != null">
+				 stk_memo,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.stkProdId!=null">
+				 #{bean.stkProdId},
+			</if>
+			<if test="bean.stkWarehouse!=null">
+				 #{bean.stkWarehouse},
+			</if>
+			<if test="bean.stkWare!=null">
+				 #{bean.stkWare},
+			</if>
+			<if test="bean.stkCount!=null">
+				 #{bean.stkCount},
+			</if>
+			<if test="bean.stkMemo!=null">
+				 #{bean.stkMemo},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.hmk.crmdoem.entity.po.Storage">
+		 INSERT INTO storage
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.stkId != null">
+				 stk_id,
+			</if>
+			<if test="bean.stkProdId != null">
+				 stk_prod_id,
+			</if>
+			<if test="bean.stkWarehouse != null">
+				 stk_warehouse,
+			</if>
+			<if test="bean.stkWare != null">
+				 stk_ware,
+			</if>
+			<if test="bean.stkCount != null">
+				 stk_count,
+			</if>
+			<if test="bean.stkMemo != null">
+				 stk_memo,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.stkId!=null">
+				 #{bean.stkId},
+			</if>
+			<if test="bean.stkProdId!=null">
+				 #{bean.stkProdId},
+			</if>
+			<if test="bean.stkWarehouse!=null">
+				 #{bean.stkWarehouse},
+			</if>
+			<if test="bean.stkWare!=null">
+				 #{bean.stkWare},
+			</if>
+			<if test="bean.stkCount!=null">
+				 #{bean.stkCount},
+			</if>
+			<if test="bean.stkMemo!=null">
+				 #{bean.stkMemo},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.stkProdId!=null">
+				 stk_prod_id = VALUES(stk_prod_id),
+			</if>
+			<if test="bean.stkWarehouse!=null">
+				 stk_warehouse = VALUES(stk_warehouse),
+			</if>
+			<if test="bean.stkWare!=null">
+				 stk_ware = VALUES(stk_ware),
+			</if>
+			<if test="bean.stkCount!=null">
+				 stk_count = VALUES(stk_count),
+			</if>
+			<if test="bean.stkMemo!=null">
+				 stk_memo = VALUES(stk_memo),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.hmk.crmdoem.entity.po.Storage" useGeneratedKeys="true" keyProperty="stkId">
+		 INSERT INTO storage(
+			 stk_prod_id,
+			 stk_warehouse,
+			 stk_ware,
+			 stk_count,
+			 stk_memo
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.stkProdId},
+				 #{item.stkWarehouse},
+				 #{item.stkWare},
+				 #{item.stkCount},
+				 #{item.stkMemo}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.hmk.crmdoem.entity.po.Storage">
+		 INSERT INTO storage(
+			 stk_prod_id,
+			 stk_warehouse,
+			 stk_ware,
+			 stk_count,
+			 stk_memo
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.stkProdId},
+				 #{item.stkWarehouse},
+				 #{item.stkWare},
+				 #{item.stkCount},
+				 #{item.stkMemo}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			stk_prod_id = VALUES(stk_prod_id),
+			stk_warehouse = VALUES(stk_warehouse),
+			stk_ware = VALUES(stk_ware),
+			stk_count = VALUES(stk_count),
+			stk_memo = VALUES(stk_memo)
+	</insert>
+
+	<!-- 根据StkId修改-->
+	<update id="updateByStkId" parameterType="com.hmk.crmdoem.entity.po.Storage">
+		 UPDATE storage
+ 		 <set> 
+			<if test="bean.stkProdId != null">
+				 stk_prod_id = #{bean.stkProdId},
+			</if>
+			<if test="bean.stkWarehouse != null">
+				 stk_warehouse = #{bean.stkWarehouse},
+			</if>
+			<if test="bean.stkWare != null">
+				 stk_ware = #{bean.stkWare},
+			</if>
+			<if test="bean.stkCount != null">
+				 stk_count = #{bean.stkCount},
+			</if>
+			<if test="bean.stkMemo != null">
+				 stk_memo = #{bean.stkMemo},
+			</if>
+ 		 </set>
+ 		 where stk_id=#{stkId}
+	</update>
+
+	<!-- 根据StkId删除-->
+	<delete id="deleteByStkId">
+		delete from storage where stk_id=#{stkId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByStkId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from storage where stk_id=#{stkId}
+	</select>
+
+</mapper>
